@@ -1,0 +1,25 @@
+{
+  "name": "js-game",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/komavlad/js-game.git"
+  },
+  "author": "Vladimir Komarov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/komavlad/js-game/issues"
+  },
+  "homepage": "https://github.com/komavlad/js-game#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5"
+  }
+}
