@@ -1,4 +1,9 @@
+import mediaHandler from './MediaHandler';
 import GameScene from './GameScene';
+import Player from './Player';
+import EmenyShip from './EmenyShip';
+import Action from './Action';
+
 export default class GameStage extends GameScene {
     constructor(props) {
         super(props);
@@ -9,13 +14,13 @@ export default class GameStage extends GameScene {
 
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
-        //player
+        // player
         this.player = this.createObject(Player, {
             hp: 100,
             speed: 6,
             positionX: 0,
             positionY: 0,
-            image: images[0],
+            image: mediaHandler.getImage(0),
             tilesAmount: 2,
             tileSize: 32,
             layer: 'main'
@@ -28,7 +33,7 @@ export default class GameStage extends GameScene {
                 speed:2,
                 positionX: i * 64,
                 positionY: 0,
-                image: images[1],
+                image: mediaHandler.getImage(1),
                 tilesAmount: 2,
                 tileSize: 32,
                 layer: 'back',

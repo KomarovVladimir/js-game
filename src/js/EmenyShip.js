@@ -1,4 +1,5 @@
 import Ship from './Ship';
+import Behavior from './Behavior';
 
 export default class EmenyShip extends Ship {
     constructor(props) {

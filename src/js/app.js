@@ -1,20 +1,3 @@
-//object containing all of the images after they are preloaded
-let images = [];
-
-//sources of all of the game images, goes to preload method
-let imageSources = [
-    './src/images/ship.png',
-    './src/images/enemy.png'
-];
-
-//key states  
-let keyStates = { 
-    up: false,
-    right: false,
-    down: false,
-    left: false
-}
-
 //key press watch <======================================================= 
 window.addEventListener('keydown', (e) => {
     if (e.keyCode === 87 || e.keyCode === 38) {
@@ -54,14 +37,14 @@ window.addEventListener('keyup', (e) => {
 
 
 import Game from './Game';
-import GameWindow from './GameWindow';
+// import GameWindow from './GameWindow';
 // import GameObject from './GameObject';
 // import GameScene from './GameScene';
-import GameStage from './GameStage';
-import Behavior from './Behavior';
+// import GameStage from './GameStage';
+// import Behavior from './Behavior';
 // import Ship from './Ship';
-import Player from './Player';
-import EmenyShip from './EmenyShip';
+// import Player from './Player';
+// import EmenyShip from './EmenyShip';
 
 
 //GAME INIT <======================================================= 

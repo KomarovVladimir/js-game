@@ -1,3 +1,6 @@
+import mediaHandler from './MediaHandler';
+import GameStage from './GameStage';
+
 export default class Game {
     constructor(canvas) {
         this.canvas = canvas;
@@ -5,22 +8,17 @@ export default class Game {
         //game state (off = 0, on = 1, pause = 2)
         this.gameState = 0;
 
-        //current game stage
-        this.levelId = 1;
-
         //sample of a stage class
         this.stage = null;
-
-        this.mediaHandler = new mediaHandler({
-            imageSources = [
-                './src/images/ship.png',
-                './src/images/enemy.png'
-            ];
-        });
     }
 
     //game initialization process
     async init() {
+        mediaHandler.setImageSources([
+            '../../dist/images/ship.png',
+            '../../dist/images/enemy.png'
+        ]);
+
         //preload images
         console.log('Image preloading.');
         await this.preloadAllImages();
@@ -29,9 +27,11 @@ export default class Game {
 
     //this method takes all of the sources from this.imageSources and preloads them
     async preloadAllImages() {
+        const imageSources = mediaHandler.getImageSources();
+
         for(let src of imageSources) {
             console.log(`Loading ${src}.`);
-            images.push(await this.preloadImage(src));
+            mediaHandler.addImage(await this.preloadImage(src));
         }
     }
 

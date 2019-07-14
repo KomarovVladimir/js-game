@@ -1,3 +1,13 @@
+import GameWindow from './GameWindow';
+
+//key states  
+let keyStates = { 
+    up: false,
+    right: false,
+    down: false,
+    left: false
+}
+
 export default class GameScene {
     constructor(props) {
         this.name = props.name;

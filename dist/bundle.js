@@ -91,30 +91,6 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _GameWindow__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _GameStage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _Behavior__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5);
-/* harmony import */ var _Player__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6);
-/* harmony import */ var _EmenyShip__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
-
-
-//object containing all of the images after they are preloaded
-let images = [];
-
-//sources of all of the game images, goes to preload method
-let imageSources = [
-    './src/images/ship.png',
-    './src/images/enemy.png'
-];
-
-//key states  
-let keyStates = { 
-    up: false,
-    right: false,
-    down: false,
-    left: false
-}
-
 //key press watch <======================================================= 
 window.addEventListener('keydown', (e) => {
     if (e.keyCode === 87 || e.keyCode === 38) {
@@ -154,20 +130,19 @@ window.addEventListener('keyup', (e) => {
 
 
 
-
+// import GameWindow from './GameWindow';
 // import GameObject from './GameObject';
 // import GameScene from './GameScene';
-
-
+// import GameStage from './GameStage';
+// import Behavior from './Behavior';
 // import Ship from './Ship';
-
-
+// import Player from './Player';
+// import EmenyShip from './EmenyShip';
 
 
 //GAME INIT <======================================================= 
 const canvas = document.getElementById('game');
 const game = new _Game__WEBPACK_IMPORTED_MODULE_0__["default"](canvas);
-console.log(game);
 game.start();    
 
 /***/ }),
@@ -177,6 +152,11 @@ game.start();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
+/* harmony import */ var _MediaHandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _GameStage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+
+
+
 class Game {
     constructor(canvas) {
         this.canvas = canvas;
@@ -184,15 +164,17 @@ class Game {
         //game state (off = 0, on = 1, pause = 2)
         this.gameState = 0;
 
-        //current game stage
-        this.levelId = 1;
-
         //sample of a stage class
         this.stage = null;
     }
 
     //game initialization process
     async init() {
+        _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].setImageSources([
+            '../../dist/images/ship.png',
+            '../../dist/images/enemy.png'
+        ]);
+
         //preload images
         console.log('Image preloading.');
         await this.preloadAllImages();
@@ -201,9 +183,11 @@ class Game {
 
     //this method takes all of the sources from this.imageSources and preloads them
     async preloadAllImages() {
+        const imageSources = _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].getImageSources();
+
         for(let src of imageSources) {
             console.log(`Loading ${src}.`);
-            images.push(await this.preloadImage(src));
+            _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].addImage(await this.preloadImage(src));
         }
     }
 
@@ -229,7 +213,7 @@ class Game {
         this.gameState = 1;
 
         //creation of stage 1 <================================================================================================ WiP!
-        this.stage = new GameStage({
+        this.stage = new _GameStage__WEBPACK_IMPORTED_MODULE_1__["default"]({
             name: 'A Test Game Stage',
             canvas: this.canvas,
             id: 0
@@ -244,20 +228,44 @@ class Game {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameWindow; });
-class GameWindow {
-    constructor(canvas) {
-        //game canvas
-        this.canvas = canvas;
+class MediaHandler {
+    constructor(props) {
+        //object containing all of the images after they are preloaded
+        this._images = [];
+        
+        //sources of all of the game images, goes to preload method
+        if (props && props.imageSources) {
+            this._imageSources = props.imageSources.slice();
+        } else {
+            this._imageSources = [];
+        }
+    }
 
-        //drawing context
-        this.ctx = this.canvas.getContext('2d');
+    setImageSources(sourcesArray) {
+        this._imageSources = sourcesArray.slice();
+    }
 
-        //field width/height
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
+    getImageSources() {
+        return  this._imageSources;
+    }
+
+    addImage(image) {
+        this._images.push(image);
+    }
+
+    getImage(n) {
+        return this._images[n];
+    }
+
+    getAllImages() {
+        return this._images;
     }
 }
+
+let mediaHandler = new MediaHandler();
+/* harmony default export */ __webpack_exports__["default"] = (mediaHandler);
+
+//CREATE A STORAGE
 
 /***/ }),
 /* 3 */
@@ -266,9 +274,18 @@ class GameWindow {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameStage; });
-/* harmony import */ var _GameScene__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _MediaHandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _GameScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _Player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var _EmenyShip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var _Action__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
 
-class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_0__["default"] {
+
+
+
+
+
+class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_1__["default"] {
     constructor(props) {
         super(props);
         this.id = props.id;
@@ -278,13 +295,13 @@ class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
-        //player
-        this.player = this.createObject(Player, {
+        // player
+        this.player = this.createObject(_Player__WEBPACK_IMPORTED_MODULE_2__["default"], {
             hp: 100,
             speed: 6,
             positionX: 0,
             positionY: 0,
-            image: images[0],
+            image: _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].getImage(0),
             tilesAmount: 2,
             tileSize: 32,
             layer: 'main'
@@ -292,12 +309,12 @@ class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_0__["default"] {
         console.log(this.player);
 
         for (let i = 0; i < 6; i++) {
-            this.enemies.push(this.createObject(EmenyShip, {
+            this.enemies.push(this.createObject(_EmenyShip__WEBPACK_IMPORTED_MODULE_3__["default"], {
                 hp: 100,
                 speed:2,
                 positionX: i * 64,
                 positionY: 0,
-                image: images[1],
+                image: _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].getImage(1),
                 tilesAmount: 2,
                 tileSize: 32,
                 layer: 'back',
@@ -307,31 +324,31 @@ class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_0__["default"] {
             }));
 
             this.enemies[i].setBehavior([
-                new Action({
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
                     method: this.enemies[i].move,
                     value: 'down',
                     duration: 1000
                 }),
-                new Action({
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
                     method: this.enemies[i].pause,
                     duration: 500
                 }),
-                new Action({
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
                     method: this.enemies[i].move,
                     value: 'up',
                     duration: 1000
                 }),
-                new Action({
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
                     method: this.enemies[i].setSpeed,
                     value: 6,
                     once: true
                 }),
-                new Action({
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
                     method: this.enemies[i].move,
                     value: 'down',
                     duration: 2000
                 }),
-                new Action({
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
                     method: this.enemies[i].pause,
                 }),
             ]);
@@ -348,11 +365,22 @@ class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_0__["default"] {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameScene; });
+/* harmony import */ var _GameWindow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+
+
+//key states  
+let keyStates = { 
+    up: false,
+    right: false,
+    down: false,
+    left: false
+}
+
 class GameScene {
     constructor(props) {
         this.name = props.name;
 
-        this.gameWindow = new GameWindow(props.canvas);
+        this.gameWindow = new _GameWindow__WEBPACK_IMPORTED_MODULE_0__["default"](props.canvas);
 
         this.objects = [];
 
@@ -546,77 +574,20 @@ class GameScene {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Behavior; });
-//BEHAVIOUR CLASS. HANDLES ACTION'S EXECUTION
-class Behavior {
-    constructor(props) {
-        //this is an array of enemy actions like move, turn, stop etc. 
-        // props.actions ? this.actions = props.actions.slice() : [];
-        if (props && props.actions) {
-            this.actions = props.actions;
-        } else {
-            this.actions = [];
-        }
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameWindow; });
+class GameWindow {
+    constructor(canvas) {
+        //game canvas
+        this.canvas = canvas;
 
-        this.currentAction = null;
-        this.actionStartTime = null;
+        //drawing context
+        this.ctx = this.canvas.getContext('2d');
 
-        this.actionStartValue = null;
+        //field width/height
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
     }
-
-    //SETTING ACTIONS
-    setActions(actions) {
-        this.actions = actions.slice();
-        this.nextAction();
-    }
-
-    addAction(action) {
-        this.actions.push(action);
-    }
-
-    //NEXT ACTIONS
-    nextAction() {
-        this.currentAction = this.actions.shift();
-        this.actionStartTime = performance.now();
-    }
-
-    doCurrentAction() {
-        if (this.currentAction.duration) {
-            let dt = performance.now() - this.actionStartTime;
-
-            if (dt >= this.currentAction.duration) {
-                this.nextAction();
-                this.actionStartTime = performance.now();
-            }
-
-            this.currentAction.method(this.currentAction.value);
-        } else if (this.currentAction.once) {
-            this.currentAction.method(this.currentAction.value);
-            this.nextAction();
-        } else {
-            this.currentAction.method(this.currentAction.value);
-        }
-    }
-
-    //DO CURRENT ACTION
-    // doCurrentAction() {
-    //     if (this.currentAction.value) {
-    //         const dv = this.currentAction.value - this.actionStartValue;
-
-    //         if (this.currentAction.value <= startActionValue) {
-
-    //         }
-
-
-    //         this.currentAction.method(this.currentAction.value);
-    //     } else if (this.currentAction.once) {
-    //         this.currentAction.method(this.currentAction.value);
-    //         this.nextAction();
-    //     } else {
-    //         this.currentAction.method(this.currentAction.value);
-    //     }
-    // }
-} 
+}
 
 /***/ }),
 /* 6 */
@@ -753,6 +724,8 @@ class GameObject {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmenyShip; });
 /* harmony import */ var _Ship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var _Behavior__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+
 
 
 class EmenyShip extends _Ship__WEBPACK_IMPORTED_MODULE_0__["default"] {
@@ -761,7 +734,7 @@ class EmenyShip extends _Ship__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
         this.pause = this.pause.bind(this);
 
-        this.behavior = new Behavior();
+        this.behavior = new _Behavior__WEBPACK_IMPORTED_MODULE_1__["default"]();
     }
     
     //ENEMY SHIP LIGIC AND ACTIONS
@@ -770,6 +743,105 @@ class EmenyShip extends _Ship__WEBPACK_IMPORTED_MODULE_0__["default"] {
     //SET BEHAVIOR
     setBehavior(actions) {
         this.behavior.setActions(actions);
+    }
+}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Behavior; });
+//BEHAVIOUR CLASS. HANDLES ACTION'S EXECUTION
+class Behavior {
+    constructor(props) {
+        //this is an array of enemy actions like move, turn, stop etc. 
+        // props.actions ? this.actions = props.actions.slice() : [];
+        if (props && props.actions) {
+            this.actions = props.actions;
+        } else {
+            this.actions = [];
+        }
+
+        this.currentAction = null;
+        this.actionStartTime = null;
+
+        this.actionStartValue = null;
+    }
+
+    //SETTING ACTIONS
+    setActions(actions) {
+        this.actions = actions.slice();
+        this.nextAction();
+    }
+
+    addAction(action) {
+        this.actions.push(action);
+    }
+
+    //NEXT ACTIONS
+    nextAction() {
+        this.currentAction = this.actions.shift();
+        this.actionStartTime = performance.now();
+    }
+
+    doCurrentAction() {
+        if (this.currentAction.duration) {
+            let dt = performance.now() - this.actionStartTime;
+
+            if (dt >= this.currentAction.duration) {
+                this.nextAction();
+                this.actionStartTime = performance.now();
+            }
+
+            this.currentAction.method(this.currentAction.value);
+        } else if (this.currentAction.once) {
+            this.currentAction.method(this.currentAction.value);
+            this.nextAction();
+        } else {
+            this.currentAction.method(this.currentAction.value);
+        }
+    }
+
+    //DO CURRENT ACTION
+    // doCurrentAction() {
+    //     if (this.currentAction.value) {
+    //         const dv = this.currentAction.value - this.actionStartValue;
+
+    //         if (this.currentAction.value <= startActionValue) {
+
+    //         }
+
+
+    //         this.currentAction.method(this.currentAction.value);
+    //     } else if (this.currentAction.once) {
+    //         this.currentAction.method(this.currentAction.value);
+    //         this.nextAction();
+    //     } else {
+    //         this.currentAction.method(this.currentAction.value);
+    //     }
+    // }
+} 
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Action; });
+//AN ACTION CLASS. IS NEEDED TO CONSTRUCT BEHAVIOR ARRAYS FOR AUTOMATIC ENTITIES
+class Action {
+    constructor(props) {
+        this.method = props.method;
+
+        this.duration = props.duration;
+        this.once = props.once;
+
+        this.value = props.value;
+
+        this.actionStartTime = null;
     }
 }
 
