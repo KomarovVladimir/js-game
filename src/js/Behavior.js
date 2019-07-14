@@ -2,69 +2,50 @@
 export default class Behavior {
     constructor(props) {
         //this is an array of enemy actions like move, turn, stop etc. 
-        // props.actions ? this.actions = props.actions.slice() : [];
+        // props.actions ? this._actions = props.actions.slice() : [];
         if (props && props.actions) {
-            this.actions = props.actions;
+            this._actions = props.actions;
         } else {
-            this.actions = [];
+            this._actions = [];
         }
 
-        this.currentAction = null;
-        this.actionStartTime = null;
+        this._currentAction = null;
+        this._actionStartTime = null;
 
-        this.actionStartValue = null;
+        this._actionStartValue = null;
     }
 
     //SETTING ACTIONS
     setActions(actions) {
-        this.actions = actions.slice();
+        this._actions = actions.slice();
         this.nextAction();
     }
 
     addAction(action) {
-        this.actions.push(action);
+        this._actions.push(action);
     }
 
     //NEXT ACTIONS
     nextAction() {
-        this.currentAction = this.actions.shift();
-        this.actionStartTime = performance.now();
+        this._currentAction = this._actions.shift();
+        this._actionStartTime = performance.now();
     }
 
     doCurrentAction() {
-        if (this.currentAction.duration) {
+        if (this._currentAction.duration) {
             let dt = performance.now() - this.actionStartTime;
 
-            if (dt >= this.currentAction.duration) {
+            if (dt >= this._currentAction.duration) {
                 this.nextAction();
                 this.actionStartTime = performance.now();
             }
 
-            this.currentAction.method(this.currentAction.value);
-        } else if (this.currentAction.once) {
-            this.currentAction.method(this.currentAction.value);
+            this._currentAction.method(this._currentAction.value);
+        } else if (this._currentAction.once) {
+            this._currentAction.method(this._currentAction.value);
             this.nextAction();
         } else {
-            this.currentAction.method(this.currentAction.value);
+            this._currentAction.method(this._currentAction.value);
         }
     }
-
-    //DO CURRENT ACTION
-    // doCurrentAction() {
-    //     if (this.currentAction.value) {
-    //         const dv = this.currentAction.value - this.actionStartValue;
-
-    //         if (this.currentAction.value <= startActionValue) {
-
-    //         }
-
-
-    //         this.currentAction.method(this.currentAction.value);
-    //     } else if (this.currentAction.once) {
-    //         this.currentAction.method(this.currentAction.value);
-    //         this.nextAction();
-    //     } else {
-    //         this.currentAction.method(this.currentAction.value);
-    //     }
-    // }
 } 

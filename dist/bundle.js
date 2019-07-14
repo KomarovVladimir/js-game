@@ -91,53 +91,6 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-//key press watch <======================================================= 
-window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 87 || e.keyCode === 38) {
-        keyStates.up = true;
-    }
-    if (e.keyCode === 65 || e.keyCode === 37) {
-        // console.log('A is pressed!');
-        keyStates.left = true;
-    }
-    if (e.keyCode === 83 || e.keyCode === 40) {
-        // console.log('S is pressed!');
-        keyStates.down = true;
-    }
-    if (e.keyCode === 68 || e.keyCode === 39) {
-        // console.log('D is pressed!');
-        keyStates.right = true;
-    }
-}, true);
-    
-window.addEventListener('keyup', (e) => {
-    if (e.keyCode === 87 || e.keyCode === 38) {
-        keyStates.up = false;
-    }
-    if (e.keyCode === 65 || e.keyCode === 37) {
-        // console.log('A is pressed!');
-        keyStates.left = false;
-    }
-    if (e.keyCode === 83 || e.keyCode === 40) {
-        // console.log('S is pressed!');
-        keyStates.down = false;
-    }
-    if (e.keyCode === 68 || e.keyCode === 39) {
-        // console.log('D is pressed!');
-        keyStates.right = false;
-    }
-}, true);
-
-
-
-// import GameWindow from './GameWindow';
-// import GameObject from './GameObject';
-// import GameScene from './GameScene';
-// import GameStage from './GameStage';
-// import Behavior from './Behavior';
-// import Ship from './Ship';
-// import Player from './Player';
-// import EmenyShip from './EmenyShip';
 
 
 //GAME INIT <======================================================= 
@@ -159,13 +112,13 @@ __webpack_require__.r(__webpack_exports__);
 
 class Game {
     constructor(canvas) {
-        this.canvas = canvas;
+        this._canvas = canvas;
 
         //game state (off = 0, on = 1, pause = 2)
-        this.gameState = 0;
+        this._gameState = 0;
 
         //sample of a stage class
-        this.stage = null;
+        this._stage = null;
     }
 
     //game initialization process
@@ -210,15 +163,15 @@ class Game {
         await this.init();
 
         //game on state
-        this.gameState = 1;
+        this._gameState = 1;
 
         //creation of stage 1 <================================================================================================ WiP!
-        this.stage = new _GameStage__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        this._stage = new _GameStage__WEBPACK_IMPORTED_MODULE_1__["default"]({
             name: 'A Test Game Stage',
-            canvas: this.canvas,
+            canvas: this._canvas,
             id: 0
         });
-        this.stage.start();
+        this._stage.start();
     }  
 }
 
@@ -376,28 +329,65 @@ let keyStates = {
     left: false
 }
 
+//key press watch <======================================================= 
+window.addEventListener('keydown', (e) => {
+    if (e.keyCode === 87 || e.keyCode === 38) {
+        keyStates.up = true;
+    }
+    if (e.keyCode === 65 || e.keyCode === 37) {
+        // console.log('A is pressed!');
+        keyStates.left = true;
+    }
+    if (e.keyCode === 83 || e.keyCode === 40) {
+        // console.log('S is pressed!');
+        keyStates.down = true;
+    }
+    if (e.keyCode === 68 || e.keyCode === 39) {
+        // console.log('D is pressed!');
+        keyStates.right = true;
+    }
+}, true);
+    
+window.addEventListener('keyup', (e) => {
+    if (e.keyCode === 87 || e.keyCode === 38) {
+        keyStates.up = false;
+    }
+    if (e.keyCode === 65 || e.keyCode === 37) {
+        // console.log('A is pressed!');
+        keyStates.left = false;
+    }
+    if (e.keyCode === 83 || e.keyCode === 40) {
+        // console.log('S is pressed!');
+        keyStates.down = false;
+    }
+    if (e.keyCode === 68 || e.keyCode === 39) {
+        // console.log('D is pressed!');
+        keyStates.right = false;
+    }
+}, true);
+
 class GameScene {
     constructor(props) {
-        this.name = props.name;
+        this._name = props.name;
 
-        this.gameWindow = new _GameWindow__WEBPACK_IMPORTED_MODULE_0__["default"](props.canvas);
+        this._gameWindow = new _GameWindow__WEBPACK_IMPORTED_MODULE_0__["default"](props.canvas);
 
-        this.objects = [];
+        this._objects = [];
 
         //game request id
-        this.requestId = null;
+        this._requestId = null;
 
-        this.timeHandler = {
+        this._timeHandler = {
             fps: 60,
             tps: 12,
             lastTime: null,
             lastTileTime: null
         };
-        this.timeHandler.frameDelay = 1000 / this.timeHandler.fps;
-        this.timeHandler.tileDelay = 1000 / this.timeHandler.tps;
+        this._timeHandler.frameDelay = 1000 / this._timeHandler.fps;
+        this._timeHandler.tileDelay = 1000 / this._timeHandler.tps;
     
     
-        this.defaultScale = 1;
+        this._defaultScale = 1;
 
         //drawing buffer. 
         //overlay is for things like menu
@@ -405,7 +395,7 @@ class GameScene {
         //main
         //back
         //background
-        this.renderLayers = {
+        this._renderLayers = {
             overlay: [],
             front: [],
             main: [],
@@ -414,7 +404,7 @@ class GameScene {
         };
 
         //default background color to make canvas visible at the beginning
-        this.backgroundColor = '#444444';
+        this._backgroundColor = '#444444';
         
     }
 
@@ -429,46 +419,46 @@ class GameScene {
 
     startSceneLoop() {
         // game start time
-        this.timeHandler.last = this.timeHandler.lastTileTime = performance.now();
-        this.requestId = requestAnimationFrame(this.frame.bind(this));
+        this._timeHandler.last = this._timeHandler.lastTileTime = performance.now();
+        this._requestId = requestAnimationFrame(this.frame.bind(this));
     }
 
     //LOGIC <================================================================================================
     update() {
         this.keyHandler();
         for (let enemy of this.enemies) {
-            enemy.behavior.doCurrentAction();
+            enemy.doCurrentAction();
         }
     }
     
     //ANIMATION <================================================================================================
     frame() {
-        let dt = performance.now() - this.timeHandler.lastTime;
+        let dt = performance.now() - this._timeHandler.lastTime;
         
-        if (dt < this.timeHandler.frameDelay) {
-            this.requestId = requestAnimationFrame(this.frame.bind(this));
+        if (dt < this._timeHandler.frameDelay) {
+            this._requestId = requestAnimationFrame(this.frame.bind(this));
         } else {
             this.update();
-            this.refreshTiles(this.objects);
+            this.refreshTiles(this._objects);
             
             this.render();
             
-            this.timeHandler.lastTime = performance.now();
-            this.requestId = requestAnimationFrame(this.frame.bind(this));
+            this._timeHandler.lastTime = performance.now();
+            this._requestId = requestAnimationFrame(this.frame.bind(this));
         }
     }
 
     //refresh all object's tiles
     refreshTiles(objects) {
-        let dt = performance.now() - this.timeHandler.lastTileTime;
-        if (dt > this.timeHandler.tileDelay) {
+        let dt = performance.now() - this._timeHandler.lastTileTime;
+        if (dt > this._timeHandler.tileDelay) {
             for (let obj of objects) {
                 obj.tileset.currentTile++;
                 if (obj.tileset.currentTile >= obj.tileset.tilesAmount) {
                     obj.tileset.currentTile = 0;
                 }
             }
-            this.timeHandler.lastTileTime = performance.now();
+            this._timeHandler.lastTileTime = performance.now();
         }
     }
 
@@ -478,7 +468,7 @@ class GameScene {
     //converts a layer object into an array and renders layer by layer from the end
     render() {
         this.fillField();
-        let layers = this.renderLayers;
+        let layers = this._renderLayers;
         const renderLayersArray = Object.values(layers);
         for (let i = renderLayersArray.length - 1; i >=0; i--) {
             for (let image of renderLayersArray[i]) {
@@ -490,16 +480,16 @@ class GameScene {
     //draws a single object
     renderObject(obj, scale) {
         if (scale !== undefined) {
-            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
+            this._gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
         } else {
-            this.gameWindow.ctx.drawImage(obj.tileset.image, obj.tileset.currentTile * obj.tileset.tileSize, 0, obj.tileset.tileSize, obj.tileset.tileSize, obj.positionX, obj.positionY, obj.tileset.tileSize * this.defaultScale, obj.tileset.tileSize * this.defaultScale);
+            this._gameWindow.ctx.drawImage(obj.tileset.image, obj.tileset.currentTile * obj.tileset.tileSize, 0, obj.tileset.tileSize, obj.tileset.tileSize, obj.positionX, obj.positionY, obj.tileset.tileSize * this._defaultScale, obj.tileset.tileSize * this._defaultScale);
         }
     }
 
     //fills the game field with default color (for now)
     fillField() {
-        this.gameWindow.ctx.fillStyle = this.backgroundColor;
-        this.gameWindow.ctx.fillRect(0, 0, this.gameWindow.width, this.gameWindow.height);
+        this._gameWindow.ctx.fillStyle = this._backgroundColor;
+        this._gameWindow.ctx.fillRect(0, 0, this._gameWindow.width, this._gameWindow.height);
     }
 
     //CONTROLLS <================================================================================================
@@ -529,14 +519,14 @@ class GameScene {
 
     //INITIALIZATION <================================================================================================
     async init() {
-        console.log(`Scene "${ this.name }" loading.`);
+        console.log(`Scene "${ this._name }" loading.`);
 
         //create basic subjects of a lvl
         console.log('Creating objects.');
         await this.createSceneObjects();
         console.log('Creating objects done.');
 
-        console.log(`Scene "${ this.name }" loaded.`);
+        console.log(`Scene "${ this._name }" loaded.`);
     }
 
     //OBJECT CREATION <================================================================================================
@@ -557,14 +547,14 @@ class GameScene {
                 tileSize: props.tileSize,
             }
         });
-        this.objects.push(obj);
+        this._objects.push(obj);
         this.pushToLayer(obj, props.layer);
         return obj;
     }
 
     //sets a render layer
     pushToLayer(obj, layer) {
-        this.renderLayers[layer].push(obj);
+        this._renderLayers[layer].push(obj);
     }
 }
 
@@ -711,8 +701,8 @@ __webpack_require__.r(__webpack_exports__);
 //a basic game object class. includes methods EVERY object on a screen has
 class GameObject {
     constructor(props) {
-        props.positionX ? this.positionX = props.positionX : this.positionX = 0;
-        props.positionY ? this.positionY = props.positionY : this.positionY = 0;
+        this._positionX = props.positionX ? props.positionX : this.positionX = 0;
+        this._positionY = props.positionY ? props.positionY : this.positionY = 0;
     }
 }
 
@@ -732,9 +722,9 @@ class EmenyShip extends _Ship__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super(props);
 
-        this.pause = this.pause.bind(this);
+        this._pause = this.pause.bind(this);
 
-        this.behavior = new _Behavior__WEBPACK_IMPORTED_MODULE_1__["default"]();
+        this._behavior = new _Behavior__WEBPACK_IMPORTED_MODULE_1__["default"]();
     }
     
     //ENEMY SHIP LIGIC AND ACTIONS
@@ -742,7 +732,11 @@ class EmenyShip extends _Ship__WEBPACK_IMPORTED_MODULE_0__["default"] {
 
     //SET BEHAVIOR
     setBehavior(actions) {
-        this.behavior.setActions(actions);
+        this._behavior.setActions(actions);
+    }
+
+    doCurrentAction() {
+        this._behavior.doCurrentAction();
     }
 }
 
@@ -757,71 +751,52 @@ __webpack_require__.r(__webpack_exports__);
 class Behavior {
     constructor(props) {
         //this is an array of enemy actions like move, turn, stop etc. 
-        // props.actions ? this.actions = props.actions.slice() : [];
+        // props.actions ? this._actions = props.actions.slice() : [];
         if (props && props.actions) {
-            this.actions = props.actions;
+            this._actions = props.actions;
         } else {
-            this.actions = [];
+            this._actions = [];
         }
 
-        this.currentAction = null;
-        this.actionStartTime = null;
+        this._currentAction = null;
+        this._actionStartTime = null;
 
-        this.actionStartValue = null;
+        this._actionStartValue = null;
     }
 
     //SETTING ACTIONS
     setActions(actions) {
-        this.actions = actions.slice();
+        this._actions = actions.slice();
         this.nextAction();
     }
 
     addAction(action) {
-        this.actions.push(action);
+        this._actions.push(action);
     }
 
     //NEXT ACTIONS
     nextAction() {
-        this.currentAction = this.actions.shift();
-        this.actionStartTime = performance.now();
+        this._currentAction = this._actions.shift();
+        this._actionStartTime = performance.now();
     }
 
     doCurrentAction() {
-        if (this.currentAction.duration) {
+        if (this._currentAction.duration) {
             let dt = performance.now() - this.actionStartTime;
 
-            if (dt >= this.currentAction.duration) {
+            if (dt >= this._currentAction.duration) {
                 this.nextAction();
                 this.actionStartTime = performance.now();
             }
 
-            this.currentAction.method(this.currentAction.value);
-        } else if (this.currentAction.once) {
-            this.currentAction.method(this.currentAction.value);
+            this._currentAction.method(this._currentAction.value);
+        } else if (this._currentAction.once) {
+            this._currentAction.method(this._currentAction.value);
             this.nextAction();
         } else {
-            this.currentAction.method(this.currentAction.value);
+            this._currentAction.method(this._currentAction.value);
         }
     }
-
-    //DO CURRENT ACTION
-    // doCurrentAction() {
-    //     if (this.currentAction.value) {
-    //         const dv = this.currentAction.value - this.actionStartValue;
-
-    //         if (this.currentAction.value <= startActionValue) {
-
-    //         }
-
-
-    //         this.currentAction.method(this.currentAction.value);
-    //     } else if (this.currentAction.once) {
-    //         this.currentAction.method(this.currentAction.value);
-    //         this.nextAction();
-    //     } else {
-    //         this.currentAction.method(this.currentAction.value);
-    //     }
-    // }
 } 
 
 /***/ }),

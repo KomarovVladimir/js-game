@@ -3,13 +3,13 @@ import GameStage from './GameStage';
 
 export default class Game {
     constructor(canvas) {
-        this.canvas = canvas;
+        this._canvas = canvas;
 
         //game state (off = 0, on = 1, pause = 2)
-        this.gameState = 0;
+        this._gameState = 0;
 
         //sample of a stage class
-        this.stage = null;
+        this._stage = null;
     }
 
     //game initialization process
@@ -54,14 +54,14 @@ export default class Game {
         await this.init();
 
         //game on state
-        this.gameState = 1;
+        this._gameState = 1;
 
         //creation of stage 1 <================================================================================================ WiP!
-        this.stage = new GameStage({
+        this._stage = new GameStage({
             name: 'A Test Game Stage',
-            canvas: this.canvas,
+            canvas: this._canvas,
             id: 0
         });
-        this.stage.start();
+        this._stage.start();
     }  
 }

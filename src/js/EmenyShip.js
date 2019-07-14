@@ -5,9 +5,9 @@ export default class EmenyShip extends Ship {
     constructor(props) {
         super(props);
 
-        this.pause = this.pause.bind(this);
+        this._pause = this.pause.bind(this);
 
-        this.behavior = new Behavior();
+        this._behavior = new Behavior();
     }
     
     //ENEMY SHIP LIGIC AND ACTIONS
@@ -15,6 +15,10 @@ export default class EmenyShip extends Ship {
 
     //SET BEHAVIOR
     setBehavior(actions) {
-        this.behavior.setActions(actions);
+        this._behavior.setActions(actions);
+    }
+
+    doCurrentAction() {
+        this._behavior.doCurrentAction();
     }
 }
