@@ -3,20 +3,18 @@ import GameObject from './GameObject';
 export default class Ship extends GameObject {
     constructor(props) {
         super(props);
-
+        
         this.hp = props.hp;
-
-        //tileset
-        this.tileset =  props.tileset;
-
-        this.tileset.currentTile = 0;
-
-        //ship's speed
         this.speed = props.speed;
 
         //methods
         this.move = this.move.bind(this);
         this.setSpeed = this.setSpeed.bind(this);
+
+        //tileset
+        this.tileset = props.tileset;
+        this.tileset.currentTile = 0;
+
     }
 
     move(direction) {

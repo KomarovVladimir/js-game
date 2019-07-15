@@ -106,7 +106,7 @@ game.start();
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Game; });
 /* harmony import */ var _MediaHandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _GameStage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _GameScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 
 
 
@@ -166,10 +166,9 @@ class Game {
         this._gameState = 1;
 
         //creation of stage 1 <================================================================================================ WiP!
-        this._stage = new _GameStage__WEBPACK_IMPORTED_MODULE_1__["default"]({
+        this._stage = new _GameScene__WEBPACK_IMPORTED_MODULE_1__["default"]({
             name: 'A Test Game Stage',
             canvas: this._canvas,
-            id: 0
         });
         this._stage.start();
     }  
@@ -221,97 +220,7 @@ let mediaHandler = new MediaHandler();
 //CREATE A STORAGE
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameStage; });
-/* harmony import */ var _MediaHandler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _GameScene__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-/* harmony import */ var _Player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
-/* harmony import */ var _EmenyShip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
-/* harmony import */ var _Action__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
-
-
-
-
-
-
-class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_1__["default"] {
-    constructor(props) {
-        super(props);
-        this.id = props.id;
-
-        this.enemies = [];
-    }
-
-    //OBJECT CREATION <================================================================================================
-    createSceneObjects() {
-        // player
-        this.player = this.createObject(_Player__WEBPACK_IMPORTED_MODULE_2__["default"], {
-            hp: 100,
-            speed: 6,
-            positionX: 0,
-            positionY: 0,
-            image: _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].getImage(0),
-            tilesAmount: 2,
-            tileSize: 32,
-            layer: 'main'
-        });
-        console.log(this.player);
-
-        for (let i = 0; i < 6; i++) {
-            this.enemies.push(this.createObject(_EmenyShip__WEBPACK_IMPORTED_MODULE_3__["default"], {
-                hp: 100,
-                speed:2,
-                positionX: i * 64,
-                positionY: 0,
-                image: _MediaHandler__WEBPACK_IMPORTED_MODULE_0__["default"].getImage(1),
-                tilesAmount: 2,
-                tileSize: 32,
-                layer: 'back',
-                actions: [
-                    'forward'
-                ]
-            }));
-
-            this.enemies[i].setBehavior([
-                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
-                    method: this.enemies[i].move,
-                    value: 'down',
-                    duration: 1000
-                }),
-                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
-                    method: this.enemies[i].pause,
-                    duration: 500
-                }),
-                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
-                    method: this.enemies[i].move,
-                    value: 'up',
-                    duration: 1000
-                }),
-                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
-                    method: this.enemies[i].setSpeed,
-                    value: 6,
-                    once: true
-                }),
-                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
-                    method: this.enemies[i].move,
-                    value: 'down',
-                    duration: 2000
-                }),
-                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
-                    method: this.enemies[i].pause,
-                }),
-            ]);
-
-            console.log(this.enemies[i]);
-        }
-    }
-}
-
-/***/ }),
+/* 3 */,
 /* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -319,6 +228,14 @@ class GameStage extends _GameScene__WEBPACK_IMPORTED_MODULE_1__["default"] {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return GameScene; });
 /* harmony import */ var _GameWindow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var _MediaHandler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _Player__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+/* harmony import */ var _EmenyShip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
+/* harmony import */ var _Action__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
+
+
+
+
 
 
 //key states  
@@ -369,10 +286,12 @@ window.addEventListener('keyup', (e) => {
 class GameScene {
     constructor(props) {
         this._name = props.name;
-
         this._gameWindow = new _GameWindow__WEBPACK_IMPORTED_MODULE_0__["default"](props.canvas);
 
         this._objects = [];
+
+        //stage enemies
+        this._enemies = [];
 
         //game request id
         this._requestId = null;
@@ -395,7 +314,7 @@ class GameScene {
         //main
         //back
         //background
-        this._renderLayers = {
+        this._layers = {
             overlay: [],
             front: [],
             main: [],
@@ -403,9 +322,117 @@ class GameScene {
             backbround: []
         };
 
+        this._layersArray = [];
+
         //default background color to make canvas visible at the beginning
         this._backgroundColor = '#444444';
         
+    }
+
+    //INITIALIZATION <================================================================================================
+    async init() {
+        console.log(`Scene "${ this._name }" loading.`);
+
+        //create basic subjects of a lvl
+        console.log('Creating objects.');
+        await this.createSceneObjects();
+        console.log('Creating objects done.');
+
+        console.log(`Scene "${ this._name }" loaded.`);
+    }
+
+    //OBJECT CREATION <================================================================================================
+    //OBJECT CREATION <================================================================================================
+    createSceneObjects() {
+        // player
+        this.player = this.createObject(_Player__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            hp: 100,
+            speed: 6,
+            positionX: 0,
+            positionY: 0,
+            tileset: {
+                image: _MediaHandler__WEBPACK_IMPORTED_MODULE_1__["default"].getImage(0),
+                tilesAmount: 2,
+                tileSize: 32,
+            },
+            layer: 'main'
+        });
+        console.log(this.player);
+
+        for (let i = 0; i < 6; i++) {
+            this._enemies.push(this.createObject(_EmenyShip__WEBPACK_IMPORTED_MODULE_3__["default"], {
+                hp: 100,
+                speed:2,
+                positionX: i * 64,
+                positionY: 0,
+                tileset: {
+                    image: _MediaHandler__WEBPACK_IMPORTED_MODULE_1__["default"].getImage(1),
+                    tilesAmount: 2,
+                    tileSize: 32,
+                },
+                layer: 'back',
+                actions: [
+                    'forward'
+                ]
+            }));
+
+            this._enemies[i].setBehavior([
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
+                    method: this._enemies[i].move,
+                    value: 'down',
+                    duration: 1000
+                }),
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
+                    method: this._enemies[i].pause,
+                    duration: 500
+                }),
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
+                    method: this._enemies[i].move,
+                    value: 'up',
+                    duration: 1000
+                }),
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
+                    method: this._enemies[i].setSpeed,
+                    value: 6,
+                    once: true
+                }),
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
+                    method: this._enemies[i].move,
+                    value: 'down',
+                    duration: 2000
+                }),
+                new _Action__WEBPACK_IMPORTED_MODULE_4__["default"]({
+                    method: this._enemies[i].pause,
+                }),
+            ]);
+
+            console.log(this._enemies[i]);
+        }
+    }
+
+    //creates a game object
+    createObject(Class, props) {
+        let obj = new Class(props);
+        this._objects.push(obj);
+        this.pushToLayer(obj, props.layer);
+        return obj;
+    }
+
+    //sets a render layer
+    pushToLayer(obj, layer) {
+        this._layers[layer].push(obj);
+        this.getLayersArray();
+    }
+
+    //transforms layers object into simple array ti simplify rendering
+    getLayersArray() {
+        this._layersArray = [];
+        const layersValues = Object.values(this._layers);
+        for (let i = layersValues.length - 1; i >=0; i--) {
+            for (let obj of layersValues[i]) {
+                this._layersArray.push(obj);
+            }
+        }
     }
 
     //start scene
@@ -426,7 +453,7 @@ class GameScene {
     //LOGIC <================================================================================================
     update() {
         this.keyHandler();
-        for (let enemy of this.enemies) {
+        for (let enemy of this._enemies) {
             enemy.doCurrentAction();
         }
     }
@@ -468,14 +495,11 @@ class GameScene {
     //converts a layer object into an array and renders layer by layer from the end
     render() {
         this.fillField();
-        let layers = this._renderLayers;
-        const renderLayersArray = Object.values(layers);
-        for (let i = renderLayersArray.length - 1; i >=0; i--) {
-            for (let image of renderLayersArray[i]) {
-                this.renderObject(image);
-            }
+
+        for (let obj of this._layersArray) {
+            this.renderObject(obj);
         }
-    }
+    } 
 
     //draws a single object
     renderObject(obj, scale) {
@@ -515,46 +539,6 @@ class GameScene {
         } else if (keyStates.right){
             this.player.move('right');
         }
-    }
-
-    //INITIALIZATION <================================================================================================
-    async init() {
-        console.log(`Scene "${ this._name }" loading.`);
-
-        //create basic subjects of a lvl
-        console.log('Creating objects.');
-        await this.createSceneObjects();
-        console.log('Creating objects done.');
-
-        console.log(`Scene "${ this._name }" loaded.`);
-    }
-
-    //OBJECT CREATION <================================================================================================
-    createSceneObjects() {
-        console.log('This is a basic object creation method. If you see this message in your log it means you did not override this method in your scene class.');
-    }
-
-    //creates an object
-    createObject(Class, props) {
-        let obj = new Class({
-            hp: props.hp,
-            speed: props.speed,
-            positionX: props.positionX,
-            positionY: props.positionY,
-            tileset: {
-                image: props.image,
-                tilesAmount: props.tilesAmount,
-                tileSize: props.tileSize,
-            }
-        });
-        this._objects.push(obj);
-        this.pushToLayer(obj, props.layer);
-        return obj;
-    }
-
-    //sets a render layer
-    pushToLayer(obj, layer) {
-        this._renderLayers[layer].push(obj);
     }
 }
 
@@ -625,20 +609,18 @@ __webpack_require__.r(__webpack_exports__);
 class Ship extends _GameObject__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super(props);
-
+        
         this.hp = props.hp;
-
-        //tileset
-        this.tileset =  props.tileset;
-
-        this.tileset.currentTile = 0;
-
-        //ship's speed
         this.speed = props.speed;
 
         //methods
         this.move = this.move.bind(this);
         this.setSpeed = this.setSpeed.bind(this);
+
+        //tileset
+        this.tileset = props.tileset;
+        this.tileset.currentTile = 0;
+
     }
 
     move(direction) {
@@ -701,8 +683,8 @@ __webpack_require__.r(__webpack_exports__);
 //a basic game object class. includes methods EVERY object on a screen has
 class GameObject {
     constructor(props) {
-        this._positionX = props.positionX ? props.positionX : this.positionX = 0;
-        this._positionY = props.positionY ? props.positionY : this.positionY = 0;
+        this.positionX = props.positionX ? props.positionX : this.positionX = 0;
+        this.positionY = props.positionY ? props.positionY : this.positionY = 0;
     }
 }
 
@@ -722,14 +704,14 @@ class EmenyShip extends _Ship__WEBPACK_IMPORTED_MODULE_0__["default"] {
     constructor(props) {
         super(props);
 
-        this._pause = this.pause.bind(this);
+        this.pause = this.pause.bind(this);
 
         this._behavior = new _Behavior__WEBPACK_IMPORTED_MODULE_1__["default"]();
     }
     
     //ENEMY SHIP LIGIC AND ACTIONS
     pause() {}
-
+ 
     //SET BEHAVIOR
     setBehavior(actions) {
         this._behavior.setActions(actions);
@@ -782,11 +764,11 @@ class Behavior {
 
     doCurrentAction() {
         if (this._currentAction.duration) {
-            let dt = performance.now() - this.actionStartTime;
+            let dt = performance.now() - this._actionStartTime;
 
             if (dt >= this._currentAction.duration) {
                 this.nextAction();
-                this.actionStartTime = performance.now();
+                this._actionStartTime = performance.now();
             }
 
             this._currentAction.method(this._currentAction.value);
@@ -810,15 +792,12 @@ __webpack_require__.r(__webpack_exports__);
 class Action {
     constructor(props) {
         this.method = props.method;
-
         this.duration = props.duration;
         this.once = props.once;
-
         this.value = props.value;
-
         this.actionStartTime = null;
     }
-}
+} 
 
 /***/ })
 /******/ ]);

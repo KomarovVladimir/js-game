@@ -33,11 +33,11 @@ export default class Behavior {
 
     doCurrentAction() {
         if (this._currentAction.duration) {
-            let dt = performance.now() - this.actionStartTime;
+            let dt = performance.now() - this._actionStartTime;
 
             if (dt >= this._currentAction.duration) {
                 this.nextAction();
-                this.actionStartTime = performance.now();
+                this._actionStartTime = performance.now();
             }
 
             this._currentAction.method(this._currentAction.value);

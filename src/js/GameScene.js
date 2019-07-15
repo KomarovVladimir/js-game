@@ -1,4 +1,8 @@
 import GameWindow from './GameWindow';
+import mediaHandler from './MediaHandler';
+import Player from './Player';
+import EmenyShip from './EmenyShip';
+import Action from './Action';
 
 //key states  
 let keyStates = { 
@@ -48,10 +52,12 @@ window.addEventListener('keyup', (e) => {
 export default class GameScene {
     constructor(props) {
         this._name = props.name;
-
         this._gameWindow = new GameWindow(props.canvas);
 
         this._objects = [];
+
+        //stage enemies
+        this._enemies = [];
 
         //game request id
         this._requestId = null;
@@ -74,7 +80,7 @@ export default class GameScene {
         //main
         //back
         //background
-        this._renderLayers = {
+        this._layers = {
             overlay: [],
             front: [],
             main: [],
@@ -82,9 +88,117 @@ export default class GameScene {
             backbround: []
         };
 
+        this._layersArray = [];
+
         //default background color to make canvas visible at the beginning
         this._backgroundColor = '#444444';
         
+    }
+
+    //INITIALIZATION <================================================================================================
+    async init() {
+        console.log(`Scene "${ this._name }" loading.`);
+
+        //create basic subjects of a lvl
+        console.log('Creating objects.');
+        await this.createSceneObjects();
+        console.log('Creating objects done.');
+
+        console.log(`Scene "${ this._name }" loaded.`);
+    }
+
+    //OBJECT CREATION <================================================================================================
+    //OBJECT CREATION <================================================================================================
+    createSceneObjects() {
+        // player
+        this.player = this.createObject(Player, {
+            hp: 100,
+            speed: 6,
+            positionX: 0,
+            positionY: 0,
+            tileset: {
+                image: mediaHandler.getImage(0),
+                tilesAmount: 2,
+                tileSize: 32,
+            },
+            layer: 'main'
+        });
+        console.log(this.player);
+
+        for (let i = 0; i < 6; i++) {
+            this._enemies.push(this.createObject(EmenyShip, {
+                hp: 100,
+                speed:2,
+                positionX: i * 64,
+                positionY: 0,
+                tileset: {
+                    image: mediaHandler.getImage(1),
+                    tilesAmount: 2,
+                    tileSize: 32,
+                },
+                layer: 'back',
+                actions: [
+                    'forward'
+                ]
+            }));
+
+            this._enemies[i].setBehavior([
+                new Action({
+                    method: this._enemies[i].move,
+                    value: 'down',
+                    duration: 1000
+                }),
+                new Action({
+                    method: this._enemies[i].pause,
+                    duration: 500
+                }),
+                new Action({
+                    method: this._enemies[i].move,
+                    value: 'up',
+                    duration: 1000
+                }),
+                new Action({
+                    method: this._enemies[i].setSpeed,
+                    value: 6,
+                    once: true
+                }),
+                new Action({
+                    method: this._enemies[i].move,
+                    value: 'down',
+                    duration: 2000
+                }),
+                new Action({
+                    method: this._enemies[i].pause,
+                }),
+            ]);
+
+            console.log(this._enemies[i]);
+        }
+    }
+
+    //creates a game object
+    createObject(Class, props) {
+        let obj = new Class(props);
+        this._objects.push(obj);
+        this.pushToLayer(obj, props.layer);
+        return obj;
+    }
+
+    //sets a render layer
+    pushToLayer(obj, layer) {
+        this._layers[layer].push(obj);
+        this.getLayersArray();
+    }
+
+    //transforms layers object into simple array ti simplify rendering
+    getLayersArray() {
+        this._layersArray = [];
+        const layersValues = Object.values(this._layers);
+        for (let i = layersValues.length - 1; i >=0; i--) {
+            for (let obj of layersValues[i]) {
+                this._layersArray.push(obj);
+            }
+        }
     }
 
     //start scene
@@ -105,7 +219,7 @@ export default class GameScene {
     //LOGIC <================================================================================================
     update() {
         this.keyHandler();
-        for (let enemy of this.enemies) {
+        for (let enemy of this._enemies) {
             enemy.doCurrentAction();
         }
     }
@@ -147,14 +261,11 @@ export default class GameScene {
     //converts a layer object into an array and renders layer by layer from the end
     render() {
         this.fillField();
-        let layers = this._renderLayers;
-        const renderLayersArray = Object.values(layers);
-        for (let i = renderLayersArray.length - 1; i >=0; i--) {
-            for (let image of renderLayersArray[i]) {
-                this.renderObject(image);
-            }
+
+        for (let obj of this._layersArray) {
+            this.renderObject(obj);
         }
-    }
+    } 
 
     //draws a single object
     renderObject(obj, scale) {
@@ -194,45 +305,5 @@ export default class GameScene {
         } else if (keyStates.right){
             this.player.move('right');
         }
-    }
-
-    //INITIALIZATION <================================================================================================
-    async init() {
-        console.log(`Scene "${ this._name }" loading.`);
-
-        //create basic subjects of a lvl
-        console.log('Creating objects.');
-        await this.createSceneObjects();
-        console.log('Creating objects done.');
-
-        console.log(`Scene "${ this._name }" loaded.`);
-    }
-
-    //OBJECT CREATION <================================================================================================
-    createSceneObjects() {
-        console.log('This is a basic object creation method. If you see this message in your log it means you did not override this method in your scene class.');
-    }
-
-    //creates an object
-    createObject(Class, props) {
-        let obj = new Class({
-            hp: props.hp,
-            speed: props.speed,
-            positionX: props.positionX,
-            positionY: props.positionY,
-            tileset: {
-                image: props.image,
-                tilesAmount: props.tilesAmount,
-                tileSize: props.tileSize,
-            }
-        });
-        this._objects.push(obj);
-        this.pushToLayer(obj, props.layer);
-        return obj;
-    }
-
-    //sets a render layer
-    pushToLayer(obj, layer) {
-        this._renderLayers[layer].push(obj);
     }
 }

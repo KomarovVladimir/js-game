@@ -1,5 +1,5 @@
 import mediaHandler from './MediaHandler';
-import GameStage from './GameStage';
+import GameScene from './GameScene';
 
 export default class Game {
     constructor(canvas) {
@@ -57,10 +57,9 @@ export default class Game {
         this._gameState = 1;
 
         //creation of stage 1 <================================================================================================ WiP!
-        this._stage = new GameStage({
+        this._stage = new GameScene({
             name: 'A Test Game Stage',
             canvas: this._canvas,
-            id: 0
         });
         this._stage.start();
     }  
