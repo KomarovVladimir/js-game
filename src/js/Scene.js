@@ -186,6 +186,7 @@ export default class GameScene {
     //LOGIC <================================================================================================
     update() {
         this.keyHandler();
+        this.player.checkBorders(this.gameWindow);
         for (let enemy of this.enemies) {
             enemy.doCurrentAction();
         }

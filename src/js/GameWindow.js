@@ -1,13 +1,12 @@
 export default class GameWindow {
     constructor(canvas) {
-        //game canvas
         this.canvas = canvas;
-
-        //drawing context
         this.ctx = this.canvas.getContext('2d');
-
-        //field width/height
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.top = 0;
+        this.right = this.canvas.width;
+        this.bottom = this.canvas.height;
+        this.left = 0;
     }
 }
