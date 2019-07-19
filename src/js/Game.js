@@ -1,15 +1,17 @@
-import mediaHandler from './MediaHandler';
-import GameScene from './GameScene';
+import MediaHandler from './MediaHandler';
+import GameScene from './Scene';
+
+const mediaHandler = new MediaHandler();
 
 export default class Game {
     constructor(canvas) {
-        this._canvas = canvas;
+        this.canvas = canvas;
 
         //game state (off = 0, on = 1, pause = 2)
-        this._gameState = 0;
+        this.gameState = 0;
 
         //sample of a stage class
-        this._stage = null;
+        this.stage = null;
     }
 
     //game initialization process
@@ -32,7 +34,7 @@ export default class Game {
         for(let src of imageSources) {
             console.log(`Loading ${src}.`);
             mediaHandler.addImage(await this.preloadImage(src));
-        }
+        } 
     }
 
     //preloads a single image from src
@@ -54,13 +56,13 @@ export default class Game {
         await this.init();
 
         //game on state
-        this._gameState = 1;
+        this.gameState = 1;
 
         //creation of stage 1 <================================================================================================ WiP!
-        this._stage = new GameScene({
+        this.stage = new GameScene({
             name: 'A Test Game Stage',
-            canvas: this._canvas,
+            canvas: this.canvas,
         });
-        this._stage.start();
+        this.stage.start();
     }  
 }

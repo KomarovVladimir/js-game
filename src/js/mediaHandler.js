@@ -1,38 +1,27 @@
-class MediaHandler {
+import gameMedia from './gameMedia';
+
+export default class MediaHandler {
     constructor(props) {
-        //object containing all of the images after they are preloaded
-        this._images = [];
-        
-        //sources of all of the game images, goes to preload method
-        if (props && props.imageSources) {
-            this._imageSources = props.imageSources.slice();
-        } else {
-            this._imageSources = [];
-        }
+        this.imageSources = (props && props.imageSources.slice()) || [];
     }
 
     setImageSources(sourcesArray) {
-        this._imageSources = sourcesArray.slice();
+        this.imageSources = sourcesArray.slice();
     }
 
     getImageSources() {
-        return  this._imageSources;
+        return  this.imageSources;
     }
 
     addImage(image) {
-        this._images.push(image);
+        gameMedia.push(image);
     }
 
     getImage(n) {
-        return this._images[n];
+        return gameMedia[n];
     }
 
-    getAllImages() {
-        return this._images;
+    getImages() {
+        return gameMedia;
     }
 }
-
-let mediaHandler = new MediaHandler();
-export default mediaHandler;
-
-//CREATE A STORAGE

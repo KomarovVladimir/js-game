@@ -7,7 +7,7 @@ export default class EmenyShip extends Ship {
 
         this.pause = this.pause.bind(this);
 
-        this._behavior = new Behavior();
+        this.behavior = new Behavior();
     }
     
     //ENEMY SHIP LIGIC AND ACTIONS
@@ -15,10 +15,10 @@ export default class EmenyShip extends Ship {
  
     //SET BEHAVIOR
     setBehavior(actions) {
-        this._behavior.setActions(actions);
+        this.behavior.setActions(actions);
     }
 
     doCurrentAction() {
-        this._behavior.doCurrentAction();
+        this.behavior.doCurrentAction();
     }
 }

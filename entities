@@ -1,0 +1,8 @@
+Game
+    loads images
+    has game states (pause/on/off)
+    creates scene
+    starts game
+
+GameScene
+    
