@@ -230,16 +230,17 @@ export default class GameScene {
 
     //draws a single object
     drawObject(obj, scale) {
-        if (scale) {
-            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
-        } else {
-            this.gameWindow.ctx.save();
-            // this.gameWindow.ctx.translate(this.gameWindow.width / 2 + obj.tileSize / 2, this.gameWindow.height / 2 + obj.tileSize / 2);
-            // this.gameWindow.ctx.rotate(obj.radAngle);
-            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize, obj.tileSize);
-            // this.gameWindow.ctx.drawImage(obj.image, obj.positionX, obj.positionY);
-            this.gameWindow.ctx.restore();
-        }
+        this.gameWindow.ctx.save();
+        // this.gameWindow.ctx.translate(this.gameWindow.width / 2, this.gameWindow.height / 2);
+        this.gameWindow.ctx.translate(obj.positionX + 192 / 2, obj.positionY + 64 / 2);
+        this.gameWindow.ctx.rotate(-obj.radAngle);
+        // this.gameWindow.ctx.drawImage(obj.image, -192 / 2, -64 / 2);
+        // if (scale) {
+            // this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
+        // } else {
+            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, -obj.tileSize / 2, -obj.tileSize / 2, obj.tileSize, obj.tileSize);
+        // }
+        this.gameWindow.ctx.restore();
     }
 
     fillField() {

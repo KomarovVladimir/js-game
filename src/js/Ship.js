@@ -77,11 +77,17 @@ export default class Ship extends GameObject {
         switch (direction) {
             case 'right': {
                 this.angle -= this.turnSpeed;
+                if ( this.angle <= 0 ) {
+                    this.angle = 360 - this.angle;
+                }
                 this.radAngle = this.angle * Math.PI / 180;
                 break;
             }
             case 'left': {
                 this.angle += this.turnSpeed;
+                if ( this.angle >= 360 ) {
+                    this.angle = this.angle - 360;
+                }
                 this.radAngle = this.angle * Math.PI / 180;
                 break;
             }
