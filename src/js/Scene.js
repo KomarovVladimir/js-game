@@ -233,7 +233,7 @@ export default class GameScene {
         this.gameWindow.ctx.save();
         // this.gameWindow.ctx.translate(this.gameWindow.width / 2, this.gameWindow.height / 2);
         this.gameWindow.ctx.translate(obj.positionX + 192 / 2, obj.positionY + 64 / 2);
-        this.gameWindow.ctx.rotate(-obj.radAngle);
+        this.gameWindow.ctx.rotate(-(obj.angle - 90) * Math.PI / 180);
         // this.gameWindow.ctx.drawImage(obj.image, -192 / 2, -64 / 2);
         // if (scale) {
             // this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
