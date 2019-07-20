@@ -89,12 +89,12 @@ export default class GameScene {
         this.player = this.createObject(Player, {
             hp: 100,
             speed: 10,
-            positionX: 0,
-            positionY: 0,
             image: mediaHandler.getImage(0),
             tilesAmount: 3,
             tileSize: 64,
         });
+        this.player.positionX = this.gameWindow.width / 2 - this.player.tileSize / 2;
+        this.player.positionY = this.gameWindow.height / 2 - this.player.tileSize / 2;
         this.pushToLayer(this.player, 'main');
         console.log(this.player);
 
@@ -233,7 +233,12 @@ export default class GameScene {
         if (scale) {
             this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
         } else {
+            this.gameWindow.ctx.save();
+            // this.gameWindow.ctx.translate(this.gameWindow.width / 2 + obj.tileSize / 2, this.gameWindow.height / 2 + obj.tileSize / 2);
+            // this.gameWindow.ctx.rotate(obj.radAngle);
             this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize, obj.tileSize);
+            // this.gameWindow.ctx.drawImage(obj.image, obj.positionX, obj.positionY);
+            this.gameWindow.ctx.restore();
         }
     }
 
@@ -244,25 +249,38 @@ export default class GameScene {
 
     keyHandler() {
         if (keyStates.up) {
-            if (keyStates.right) {
-                this.player.move('up-right');
-            } else if (keyStates.left){
-                this.player.move('up-left');
-            } else {
-                this.player.move('up');
-            }
-        } else if (keyStates.down) {
-            if (keyStates.right) {
-                this.player.move('down-right');
-            } else if (keyStates.left){
-                this.player.move('down-left');
-            } else {
-                this.player.move('down');
-            }
-        } else if (keyStates.left) {
-            this.player.move('left');
-        } else if (keyStates.right){
-            this.player.move('right');
+            this.player.moveForward();
         }
+        if (keyStates.down) {
+            this.player.moveBack();
+        }
+        if (keyStates.left) {
+            this.player.turn('left');
+        }
+        if (keyStates.right) {
+            this.player.turn('right');
+        }
+
+        // if (keyStates.up) {
+        //     if (keyStates.right) {
+        //         this.player.move('up-right');
+        //     } else if (keyStates.left){
+        //         this.player.move('up-left');
+        //     } else {
+        //         this.player.move('up');
+        //     }
+        // } else if (keyStates.down) {
+        //     if (keyStates.right) {
+        //         this.player.move('down-right');
+        //     } else if (keyStates.left){
+        //         this.player.move('down-left');
+        //     } else {
+        //         this.player.move('down');
+        //     }
+        // } else if (keyStates.left) {
+        //     this.player.move('left');
+        // } else if (keyStates.right){
+        //     this.player.move('right');
+        // }
     }
 }

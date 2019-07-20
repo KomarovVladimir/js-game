@@ -10,6 +10,9 @@ export default class Ship extends GameObject {
         this.tilesAmount = props.tilesAmount || 0;
         this.tileSize  = props.tileSize || 0;
         this.currentTile = props.currentTile || 0;
+        this.angle = props.angle || 90;
+        this.radAngle = this.angle * Math.PI / 180;
+        this.turnSpeed = props.turnSpeed || 5;
 
         //methods
         this.move = this.move.bind(this);
@@ -56,6 +59,30 @@ export default class Ship extends GameObject {
                 let offset = Math.round(this.speed * Math.sqrt(2) / 2);
                 this.positionY += offset;
                 this.positionX -= offset;
+                break;
+            }
+        }
+    }
+
+    moveForward() {
+        this.positionX += Math.cos(this.radAngle) * this.speed;
+        this.positionY -= Math.sin(this.radAngle) * this.speed;
+    }
+    moveBack() {
+        this.positionX -= Math.cos(this.radAngle) * this.speed;
+        this.positionY += Math.sin(this.radAngle) * this.speed;
+    }
+
+    turn(direction) {
+        switch (direction) {
+            case 'right': {
+                this.angle -= this.turnSpeed;
+                this.radAngle = this.angle * Math.PI / 180;
+                break;
+            }
+            case 'left': {
+                this.angle += this.turnSpeed;
+                this.radAngle = this.angle * Math.PI / 180;
                 break;
             }
         }
