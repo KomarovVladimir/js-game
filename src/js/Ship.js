@@ -74,7 +74,6 @@ export default class Ship extends GameObject {
     }
 
     turn(direction) {
-        console.log(this.angle);
         switch (direction) {
             case 'right': {
                 this.angle -= this.turnSpeed;

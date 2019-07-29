@@ -19,51 +19,6 @@ export default class Player extends Ship {
         super(props);
     }
 
-    move(direction) {
-        switch (direction) {
-            case 'up': {
-                this.positionY -= this.speed;
-                break;
-            }
-            case 'down': {
-                this.positionY += this.speed;
-                break;
-            }
-            case 'right': {
-                this.positionX += this.speed;
-                break;
-            }
-            case 'left': {
-                this.positionX -= this.speed;
-                break;
-            }
-            case 'up-right': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY -= offset;
-                this.positionX += offset;
-                break;
-            }
-            case 'up-left': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY -= offset;
-                this.positionX -= offset;
-                break;
-            }
-            case 'down-right': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY += offset;
-                this.positionX += offset;
-                break;
-            }
-            case 'down-left': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY += offset;
-                this.positionX -= offset;
-                break;
-            }
-        }
-    }
-
     checkBorders(rectangle) {
         if (this.positionY < rectangle.top) {
             this.positionY = rectangle.top;

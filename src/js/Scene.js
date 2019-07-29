@@ -186,7 +186,6 @@ export default class GameScene {
     //LOGIC <================================================================================================
     update() {
         this.keyHandler();
-        this.player.checkBorders(this.gameWindow);
         for (let enemy of this.enemies) {
             enemy.doCurrentAction();
         }
@@ -231,15 +230,13 @@ export default class GameScene {
     //draws a single object
     drawObject(obj, scale) {
         this.gameWindow.ctx.save();
-        // this.gameWindow.ctx.translate(this.gameWindow.width / 2, this.gameWindow.height / 2);
-        this.gameWindow.ctx.translate(obj.positionX + 192 / 2, obj.positionY + 64 / 2);
+        this.gameWindow.ctx.translate(obj.positionX  + obj.tileSize / 2, obj.positionY + obj.tileSize / 2);
         this.gameWindow.ctx.rotate(-(obj.angle - 90) * Math.PI / 180);
-        // this.gameWindow.ctx.drawImage(obj.image, -192 / 2, -64 / 2);
-        // if (scale) {
-            // this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
-        // } else {
+        if (scale) {
+            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
+        } else {
             this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, -obj.tileSize / 2, -obj.tileSize / 2, obj.tileSize, obj.tileSize);
-        // }
+        }
         this.gameWindow.ctx.restore();
     }
 
@@ -249,39 +246,41 @@ export default class GameScene {
     }
 
     keyHandler() {
+        // if (keyStates.up) {
+        //     this.player.moveForward();
+        // }
+        // if (keyStates.down) {
+        //     this.player.moveBack();
+        // }
+        // if (keyStates.left) {
+        //     this.player.turn('left');
+        // }
+        // if (keyStates.right) {
+        //     this.player.turn('right');
+        // }
+
         if (keyStates.up) {
-            this.player.moveForward();
-        }
-        if (keyStates.down) {
-            this.player.moveBack();
-        }
-        if (keyStates.left) {
-            this.player.turn('left');
-        }
-        if (keyStates.right) {
-            this.player.turn('right');
+            if (keyStates.right) {
+                this.player.move('up-right');
+            } else if (keyStates.left){
+                this.player.move('up-left');
+            } else {
+                this.player.move('up');
+            }
+        } else if (keyStates.down) {
+            if (keyStates.right) {
+                this.player.move('down-right');
+            } else if (keyStates.left){
+                this.player.move('down-left');
+            } else {
+                this.player.move('down');
+            }
+        } else if (keyStates.left) {
+            this.player.move('left');
+        } else if (keyStates.right){
+            this.player.move('right');
         }
 
-        // if (keyStates.up) {
-        //     if (keyStates.right) {
-        //         this.player.move('up-right');
-        //     } else if (keyStates.left){
-        //         this.player.move('up-left');
-        //     } else {
-        //         this.player.move('up');
-        //     }
-        // } else if (keyStates.down) {
-        //     if (keyStates.right) {
-        //         this.player.move('down-right');
-        //     } else if (keyStates.left){
-        //         this.player.move('down-left');
-        //     } else {
-        //         this.player.move('down');
-        //     }
-        // } else if (keyStates.left) {
-        //     this.player.move('left');
-        // } else if (keyStates.right){
-        //     this.player.move('right');
-        // }
+        this.player.checkBorders(this.gameWindow);
     }
 }
