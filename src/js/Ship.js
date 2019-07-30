@@ -13,64 +13,22 @@ export default class Ship extends GameObject {
         this.angle = props.angle || 90;
         this.radAngle = this.angle * Math.PI / 180;
         this.turnSpeed = props.turnSpeed || 5;
+        this.shootingSpeed = props.shootingSpeed || 1;
+        this.items = [];
 
         //methods
         this.move = this.move.bind(this);
         this.setSpeed = this.setSpeed.bind(this);
     }
 
-    move(direction) {
-        switch (direction) {
-            case 'up': {
-                this.positionY -= this.speed;
-                break;
-            }
-            case 'down': {
-                this.positionY += this.speed;
-                break;
-            }
-            case 'right': {
-                this.positionX += this.speed;
-                break;
-            }
-            case 'left': {
-                this.positionX -= this.speed;
-                break;
-            }
-            case 'up-right': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY -= offset;
-                this.positionX += offset;
-                break;
-            }
-            case 'up-left': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY -= offset;
-                this.positionX -= offset;
-                break;
-            }
-            case 'down-right': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY += offset;
-                this.positionX += offset;
-                break;
-            }
-            case 'down-left': {
-                let offset = Math.round(this.speed * Math.sqrt(2) / 2);
-                this.positionY += offset;
-                this.positionX -= offset;
-                break;
-            }
-        }
+    shot() {
+        console.log('shot');
     }
 
-    moveForward() {
-        this.positionX += Math.cos(this.radAngle) * this.speed;
-        this.positionY -= Math.sin(this.radAngle) * this.speed;
-    }
-    moveBack() {
-        this.positionX -= Math.cos(this.radAngle) * this.speed;
-        this.positionY += Math.sin(this.radAngle) * this.speed;
+    move(angle) {
+        const radAngle = angle * Math.PI / 180;
+        this.positionX += Math.round(Math.cos(radAngle) * this.speed);
+        this.positionY -= Math.round(Math.sin(radAngle) * this.speed);
     }
 
     turn(direction) {

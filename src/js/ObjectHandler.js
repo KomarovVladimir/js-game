@@ -7,6 +7,7 @@ export default class ObjectHandler {
     createObject(Class, props) {
         let obj = new Class(props);
         gameObjects.push(obj);
+        return obj;
     }
 
     getObject(n) {
