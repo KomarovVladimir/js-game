@@ -18,7 +18,8 @@ export default class Game {
     async init() {
         mediaHandler.setImageSources([
             '../../dist/images/ship.png',
-            '../../dist/images/enemy.png'
+            '../../dist/images/enemy.png',
+            '../../dist/images/bullet.png'
         ]);
 
         //preload images
@@ -33,7 +34,7 @@ export default class Game {
 
         for(let src of imageSources) {
             console.log(`Loading ${src}.`);
-            mediaHandler.addImage(await this.preloadImage(src));
+            mediaHandler.addImage(await this.preloadImage(src), src);
         } 
     }
 

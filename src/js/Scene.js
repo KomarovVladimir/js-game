@@ -4,6 +4,7 @@ import ObjectHandler from './ObjectHandler';
 import Player from './Player';
 import EmenyShip from './EmenyShip';
 import Action from './Action';
+import Weapon from './Weapon';
 import keyStates from './keyStates';
 
 const mediaHandler = new MediaHandler();
@@ -49,9 +50,11 @@ export default class GameScene {
         this.player = objectHandler.createObject(Player, {
             hp: 100,
             speed: 10,
-            image: mediaHandler.getImage(0),
+            shotingSpeed: 10,
+            image: mediaHandler.getImage('ship'),
             tilesAmount: 1,
             tileSize: 32,
+            // weapon: 
         });
         this.player.positionX = this.gameWindow.width / 2 - this.player.tileSize / 2;
         this.player.positionY = this.gameWindow.height / 2 - this.player.tileSize / 2;

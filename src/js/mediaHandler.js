@@ -13,15 +13,20 @@ export default class MediaHandler {
         return  this.imageSources;
     }
 
-    addImage(image) {
-        gameMedia.push(image);
+    addImage(image, src) {
+        const imageName = src.match(/(\w+)(?:\.\w+)$/)[1];
+        gameMedia[imageName] = image;
     }
 
-    getImage(n) {
-        return gameMedia[n];
+    getImage(image) {
+        return gameMedia[image];
     }
 
-    getImages() {
-        return gameMedia;
-    }
+    // getImage(n) {
+    //     return gameMedia[n];
+    // }
+
+    // getImages() {
+    //     return gameMedia;
+    // }
 }
