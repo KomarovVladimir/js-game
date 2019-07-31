@@ -47,17 +47,25 @@ export default class GameScene {
 
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
+        const basicWeapon = new Weapon({
+            speed: 20,
+            image: mediaHandler.getImage('bullet'),
+            tileWidth: 1,
+            tileHeight: 3
+        });
+
         this.player = objectHandler.createObject(Player, {
             hp: 100,
-            speed: 10,
+            speed: 30,
             shotingSpeed: 10,
             image: mediaHandler.getImage('ship'),
             tilesAmount: 1,
-            tileSize: 32,
-            // weapon: 
+            tileWidth: 32,
+            tileHeight: 32,
+            weapon: basicWeapon
         });
-        this.player.positionX = this.gameWindow.width / 2 - this.player.tileSize / 2;
-        this.player.positionY = this.gameWindow.height / 2 - this.player.tileSize / 2;
+        this.player.positionX = this.gameWindow.width / 2 - this.player.tileWidth / 2;
+        this.player.positionY = this.gameWindow.height / 2 - this.player.tileHeight / 2;
         this.pushToLayer(this.player, 'main');
         console.log(this.player);
     }
@@ -141,12 +149,12 @@ export default class GameScene {
     //draws a single object
     drawObject(obj, scale) {
         this.gameWindow.ctx.save();
-        this.gameWindow.ctx.translate(obj.positionX  + obj.tileSize / 2, obj.positionY + obj.tileSize / 2);
+        this.gameWindow.ctx.translate(obj.positionX  + obj.tileWidth / 2, obj.positionY + obj.tileHeight / 2);
         this.gameWindow.ctx.rotate(-(obj.angle - 90) * Math.PI / 180);
         if (scale) {
-            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileSize * scale, obj.tileSize * scale);
+            // // this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileWidth, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileWidth * scale, obj.tileWidth * scale);
         } else {
-            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileSize, 0, obj.tileSize, obj.tileSize, -obj.tileSize / 2, -obj.tileSize / 2, obj.tileSize, obj.tileSize);
+            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileWidth, 0, obj.tileWidth, obj.tileHeight, -obj.tileWidth / 2, -obj.tileHeight / 2, obj.tileWidth, obj.tileHeight);
         }
         this.gameWindow.ctx.restore();
     }

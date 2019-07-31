@@ -12,7 +12,7 @@ export default class Weapon extends Object {
     }
 
     shot() {
-        objectHandler.createObject();
+        // objectHandler.createObject();
     }
 
     createBullet() {

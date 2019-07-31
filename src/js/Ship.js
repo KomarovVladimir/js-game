@@ -12,7 +12,7 @@ export default class Ship extends Object {
         this.weapon = props.weapon || null;
     }
 
-    shot() {
+    shot() {            
         if (!this.lastShot) {
             this.lastShot = performance.now(); 
         }
@@ -21,5 +21,5 @@ export default class Ship extends Object {
             this.weapon.shot();
             this.lastShot = performance.now();
         }
-    }
+    } 
 }

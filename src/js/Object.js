@@ -3,7 +3,8 @@ export default class GameObject {
     constructor(props) {
         this.image = props.image || null;
         this.tilesAmount = props.tilesAmount || 0;
-        this.tileSize  = props.tileSize || 0;
+        this.tileWidth = props.tileWidth || 0;
+        this.tileHeight = props.tileHeight || 0;
         this.currentTile = props.currentTile || 0;
         this.angle = props.angle || 90;
         this.radAngle = this.angle * Math.PI / 180;
