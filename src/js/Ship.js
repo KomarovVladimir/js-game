@@ -5,8 +5,6 @@ export default class Ship extends Object {
         super(props);
         
         this.hp = props.hp || 100;
-        this.speed = props.speed || 10;
-        this.turnSpeed = props.turnSpeed || 5;
         this.shotingSpeed = props.shotingSpeed || 1;
         this.lastShot = null;
         this.weapon = props.weapon || null;

@@ -1,12 +1,21 @@
 export default class GameWindow {
-    constructor(canvas) {
-        this.canvas = canvas;
+    constructor(props) {
+        this.canvas = props.canvas;
         this.ctx = this.canvas.getContext('2d');
-        this.width = this.canvas.width;
-        this.height = this.canvas.height;
+        this.width = props.width;
+        this.height = props.height;
         this.top = 0;
-        this.right = this.canvas.width;
-        this.bottom = this.canvas.height;
+        this.right = props.width;
+        this.bottom = props.height;
         this.left = 0;
+        this.scale = props.scale || 1;
+
+        if (props.scale) {
+            this.scaleContext(this.scale);
+        }
+    }
+
+    scaleContext(scale) {
+        this.ctx.scale(scale, scale);
     }
 }

@@ -6,6 +6,8 @@ export default class GameObject {
         this.tileWidth = props.tileWidth || 0;
         this.tileHeight = props.tileHeight || 0;
         this.currentTile = props.currentTile || 0;
+        this.speed = props.speed || 10;
+        this.turnSpeed = props.turnSpeed || 5;
         this.angle = props.angle || 90;
         this.radAngle = this.angle * Math.PI / 180;
         this.positionX = props.positionX || 0;
@@ -53,5 +55,13 @@ export default class GameObject {
 
     getImage() {
         return this.image;
+    }
+
+    draw(ctx, scale) {
+        ctx.save();
+        ctx.translate(this.positionX  + this.tileWidth / 2, this.positionY + this.tileHeight / 2);
+        ctx.rotate(-(this.angle - 90) * Math.PI / 180);
+        ctx.drawImage(this.image, this.currentTile * this.tileWidth, 0, this.tileWidth, this.tileHeight, -this.tileWidth / 2, -this.tileHeight / 2, this.tileWidth, this.tileHeight);
+        ctx.restore();
     }
 }

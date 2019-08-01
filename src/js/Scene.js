@@ -13,14 +13,18 @@ const objectHandler = new ObjectHandler();
 export default class GameScene {
     constructor(props) {
         this.name = props.name;
-        this.gameWindow = new GameWindow(props.canvas);
+        this.gameWindow = new GameWindow({
+            canvas: props.canvas,
+            width: 400,
+            height: 600
+        });
         this.requestId = null;
         this.fps = 60;
         this.tps = 12;
         this.lastTime = null;
         this.lastTileTime = null;
-        this.frameDelay = 1000 / this.fps;
-        this.tileDelay = 1000 / this.tps;
+        this.frameDelay = Math.floor(1000 / this.fps);
+        this.tileDelay =  Math.floor(1000 / this.tps);
         this.defaultScale = 1;
         this.objects = objectHandler.getObjects();
         this.layers = {
@@ -56,7 +60,7 @@ export default class GameScene {
 
         this.player = objectHandler.createObject(Player, {
             hp: 100,
-            speed: 30,
+            speed: 5,
             shotingSpeed: 10,
             image: mediaHandler.getImage('ship'),
             tilesAmount: 1,
@@ -142,22 +146,9 @@ export default class GameScene {
         this.fillField();
 
         for (let obj of this.layersArray) {
-            this.drawObject(obj);
+            obj.draw(this.gameWindow.ctx, 1/this.gameWindow.scale);
         }
     } 
-
-    //draws a single object
-    drawObject(obj, scale) {
-        this.gameWindow.ctx.save();
-        this.gameWindow.ctx.translate(obj.positionX  + obj.tileWidth / 2, obj.positionY + obj.tileHeight / 2);
-        this.gameWindow.ctx.rotate(-(obj.angle - 90) * Math.PI / 180);
-        if (scale) {
-            // // this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileWidth, 0, obj.tileSize, obj.tileSize, obj.positionX, obj.positionY, obj.tileWidth * scale, obj.tileWidth * scale);
-        } else {
-            this.gameWindow.ctx.drawImage(obj.image, obj.currentTile * obj.tileWidth, 0, obj.tileWidth, obj.tileHeight, -obj.tileWidth / 2, -obj.tileHeight / 2, obj.tileWidth, obj.tileHeight);
-        }
-        this.gameWindow.ctx.restore();
-    }
 
     fillField() {
         this.gameWindow.ctx.fillStyle = this.backgroundColor;
