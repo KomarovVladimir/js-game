@@ -16,7 +16,8 @@ export default class GameScene {
         this.gameWindow = new GameWindow({
             canvas: props.canvas,
             width: 400,
-            height: 600
+            height: 600,
+            // scale: 2
         });
         this.requestId = null;
         this.fps = 60;
@@ -52,10 +53,10 @@ export default class GameScene {
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
         const basicWeapon = new Weapon({
-            speed: 20,
             image: mediaHandler.getImage('bullet'),
             tileWidth: 1,
-            tileHeight: 3
+            tileHeight: 3,
+            speed: 10,
         });
 
         this.player = objectHandler.createObject(Player, {
@@ -64,8 +65,8 @@ export default class GameScene {
             shotingSpeed: 10,
             image: mediaHandler.getImage('ship'),
             tilesAmount: 1,
-            tileWidth: 32,
-            tileHeight: 32,
+            tileWidth: 16,
+            tileHeight: 16,
             weapon: basicWeapon
         });
         this.player.positionX = this.gameWindow.width / 2 - this.player.tileWidth / 2;
@@ -109,9 +110,11 @@ export default class GameScene {
     //LOGIC <================================================================================================
     update() {
         this.keyHandler();
-        // for (let enemy of this.enemies) {
-        //     enemy.doCurrentAction();
-        // }
+        for (let obj of this.objects) {
+            if (obj.update) {
+                obj.update();
+            }
+        }
     }
     
     //ANIMATION <================================================================================================
@@ -145,8 +148,8 @@ export default class GameScene {
     render() {
         this.fillField();
 
-        for (let obj of this.layersArray) {
-            obj.draw(this.gameWindow.ctx, 1/this.gameWindow.scale);
+        for (let obj of this.objects) {
+            obj.draw(this.gameWindow.ctx);
         }
     } 
 

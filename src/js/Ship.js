@@ -13,10 +13,11 @@ export default class Ship extends Object {
     shot() {            
         if (!this.lastShot) {
             this.lastShot = performance.now(); 
+            this.weapon.shot(this.positionX + this.tileWidth / 2, this.positionY);
         }
         let dt = performance.now() - this.lastShot;
         if (dt >= 1000 / this.shotingSpeed) {
-            this.weapon.shot();
+            this.weapon.shot(this.positionX + this.tileWidth / 2, this.positionY);
             this.lastShot = performance.now();
         }
     } 

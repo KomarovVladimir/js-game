@@ -29,6 +29,7 @@ export default class Behavior {
     nextAction() {
         this.currentAction = this.actions.shift();
         this.actionStartTime = performance.now();
+        this.doCurrentAction();
     }
 
     doCurrentAction() {

@@ -12,6 +12,8 @@ export default class GameObject {
         this.radAngle = this.angle * Math.PI / 180;
         this.positionX = props.positionX || 0;
         this.positionY = props.positionY || 0;
+
+        this.move = this.move.bind(this);
     }
 
     move(angle) {
@@ -57,7 +59,7 @@ export default class GameObject {
         return this.image;
     }
 
-    draw(ctx, scale) {
+    draw(ctx) {
         ctx.save();
         ctx.translate(this.positionX  + this.tileWidth / 2, this.positionY + this.tileHeight / 2);
         ctx.rotate(-(this.angle - 90) * Math.PI / 180);
