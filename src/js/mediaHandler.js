@@ -22,11 +22,22 @@ export default class MediaHandler {
         return gameMedia[image];
     }
 
-    // getImage(n) {
-    //     return gameMedia[n];
-    // }
+    async preloadAllImages() {
+        for(let src of this.imageSources) {
+            console.log(`Loading ${src}.`);
+            this.addImage(await this.preloadImage(src), src);
+        } 
+    }
 
-    // getImages() {
-    //     return gameMedia;
-    // }
+    preloadImage(src) {
+        return new Promise((resolve, reject) => {
+            let img = new Image();
+            img.onload = () => {
+                console.log(`Image ${img.src} loaded.`)
+                resolve(img);
+            };
+            img.onerror = () => reject();
+            img.src = src;
+        });
+    }
 }

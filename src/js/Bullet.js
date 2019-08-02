@@ -1,6 +1,7 @@
 import Object from './Object';
-import Behavior from './Behavior';
-import Action from './Action';
+import ObjectHandler from './ObjectHandler';
+
+const objectHandler = new ObjectHandler();
 
 export default class Bullet extends Object {
     constructor (props) {
@@ -12,5 +13,12 @@ export default class Bullet extends Object {
 
     update() {
         this.move(this.angle);
+        this.checkBorders()
+    }
+
+    checkBorders() {
+        if (this.positionY - this.tileHeight < 0) {
+            objectHandler.deleteObject(this);
+        }
     }
 }

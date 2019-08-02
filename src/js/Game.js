@@ -17,40 +17,16 @@ export default class Game {
     //game initialization process
     async init() {
         mediaHandler.setImageSources([
-            '../../dist/images/ship.png',
-            '../../dist/images/enemy.png',
-            '../../dist/images/bullet.png',
+            './dist/images/ship.png',
+            './dist/images/enemy.png',
+            './dist/images/bullet.png',
         ]);
 
         //preload images
         console.log('Image preloading.');
-        await this.preloadAllImages();
+        await mediaHandler.preloadAllImages();
         console.log('Images preloading done.');
     }
-
-    //this method takes all of the sources from this.imageSources and preloads them
-    async preloadAllImages() {
-        const imageSources = mediaHandler.getImageSources();
-
-        for(let src of imageSources) {
-            console.log(`Loading ${src}.`);
-            mediaHandler.addImage(await this.preloadImage(src), src);
-        } 
-    }
-
-    //preloads a single image from src
-    preloadImage(src) {
-        return new Promise((resolve, reject) => {
-            let img = new Image();
-            img.onload = () => {
-                console.log(`Image ${img.src} loaded.`)
-                resolve(img);
-            };
-            img.onerror = () => reject();
-            img.src = src;
-        });
-    }
-
     //game start
     //============================================wip=================
     async start() {

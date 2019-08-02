@@ -17,4 +17,8 @@ export default class ObjectHandler {
     getObjects() {
         return gameObjects;
     }
+
+    deleteObject(obj) {
+        gameObjects.splice(gameObjects.indexOf(obj), 1);
+    }
 }
