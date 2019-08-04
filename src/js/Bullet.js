@@ -1,9 +1,9 @@
-import Object from './Object';
+import DynamicObject from './DynamicObject';
 import ObjectHandler from './ObjectHandler';
 
 const objectHandler = new ObjectHandler();
 
-export default class Bullet extends Object {
+export default class Bullet extends DynamicObject {
     constructor (props) {
         super(props);
 

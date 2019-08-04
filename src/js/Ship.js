@@ -1,6 +1,6 @@
-import Object from './Object';
+import DynamicObject from './DynamicObject';
 
-export default class Ship extends Object {
+export default class Ship extends DynamicObject {
     constructor(props) {
         super(props);
         

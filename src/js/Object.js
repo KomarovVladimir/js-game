@@ -1,5 +1,5 @@
 //a basic game object class. includes methods EVERY object on a screen has
-export default class GameObject {
+export default class Object {
     constructor(props) {
         this.name = props.name;
         this.group = props.group || null;
@@ -8,45 +8,10 @@ export default class GameObject {
         this.tileWidth = props.tileWidth || 0;
         this.tileHeight = props.tileHeight || 0;
         this.currentTile = props.currentTile || 0;
-        this.speed = props.speed || 10;
-        this.turnSpeed = props.turnSpeed || 5;
         this.angle = props.angle || 90;
         this.radAngle = this.angle * Math.PI / 180;
         this.positionX = props.positionX || 0;
         this.positionY = props.positionY || 0;
-
-        this.move = this.move.bind(this);
-    }
-
-    move(angle) {
-        const radAngle = angle * Math.PI / 180;
-        this.positionX += Math.round(Math.cos(radAngle) * this.speed);
-        this.positionY -= Math.round(Math.sin(radAngle) * this.speed);
-    }
-
-    turn(direction) {
-        switch (direction) {
-            case 'right': {
-                this.angle -= this.turnSpeed;
-                if ( this.angle <= 0 ) {
-                    this.angle = 360 - this.angle;
-                }
-                this.radAngle = this.angle * Math.PI / 180;
-                break;
-            }
-            case 'left': {
-                this.angle += this.turnSpeed;
-                if ( this.angle >= 360 ) {
-                    this.angle = this.angle - 360;
-                }
-                this.radAngle = this.angle * Math.PI / 180;
-                break;
-            }
-        }
-    }
-
-    setSpeed(speed) {
-        this.speed = speed;
     }
 
     nextTile() {
