@@ -53,7 +53,7 @@ export default class GameScene {
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
         const basicWeapon = new Weapon({
-            image: mediaHandler.getImage('bullet'),
+            bulletImage: mediaHandler.getImage('bullet'),
             tileWidth: 1,
             tileHeight: 3,
             speed: 10,

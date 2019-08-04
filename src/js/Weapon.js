@@ -5,7 +5,9 @@ const objectHandler = new ObjectHandler();
 
 export default class Weapon {
     constructor (props) {
-        this.image = props.image;
+        this.name = props.name;
+        this.group = props.group;
+        this.bulletImage = props.bulletImage;
         this.tileWidth = props.tileWidth;
         this.tileHeight = props.tileHeight;
         this.damage = props.damage || 1;
@@ -14,7 +16,8 @@ export default class Weapon {
 
     shot(positionX, positionY) {
         objectHandler.createObject(Bullet, {
-            image: this.image,
+            group: 'playerBullet',
+            image: this.bulletImage,
             tileWidth: this.tileWidth,
             tileHeight: this.tileHeight,
             positionX: positionX,

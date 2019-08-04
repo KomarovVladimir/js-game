@@ -1,13 +1,15 @@
 import gameObjects from './gameObjects';
 
 export default class ObjectHandler {
-    constructor() {
-    }
-
+    
     createObject(Class, props) {
         let obj = new Class(props);
-        gameObjects.push(obj);
+        this.addObject(obj);
         return obj;
+    }
+
+    addObject(obj) {
+        gameObjects.push(obj);
     }
 
     getObject(n) {

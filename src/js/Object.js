@@ -1,6 +1,8 @@
 //a basic game object class. includes methods EVERY object on a screen has
 export default class GameObject {
     constructor(props) {
+        this.name = props.name;
+        this.group = props.group || null;
         this.image = props.image || null;
         this.tilesAmount = props.tilesAmount || 0;
         this.tileWidth = props.tileWidth || 0;
