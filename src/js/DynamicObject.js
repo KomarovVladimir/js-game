@@ -11,6 +11,9 @@ export default class DynamicObject extends Object {
         const radAngle = angle * Math.PI / 180;
         this.positionX += Math.round(Math.cos(radAngle) * this.speed);
         this.positionY -= Math.round(Math.sin(radAngle) * this.speed);
+        if (this.hasHitbox) {
+            this.updateHitboxPosition();
+        }
     }
 
     turn(direction) {
@@ -36,5 +39,10 @@ export default class DynamicObject extends Object {
 
     setSpeed(speed) {
         this.speed = speed;
+    }
+
+    updateHitboxPosition() {
+        this.hitboxPositionX = this.positionX + this.hitboxOffsetX;
+        this.hitboxPositionY = this.positionY + this.hitboxOffsetY;
     }
 }

@@ -6,17 +6,17 @@ export default class Player extends Ship {
     }
 
     checkBorders(rectangle) {
-        if (this.positionY < rectangle.top) {
-            this.positionY = rectangle.top;
+        if (this.hitboxPositionY < rectangle.top) {
+            this.positionY = rectangle.top - this.hitboxOffsetY;
         }
-        if (this.positionY > rectangle.bottom - this.tileHeight) {
-            this.positionY = rectangle.bottom - this.tileHeight;
+        if (this.hitboxPositionY > rectangle.bottom - this.tileHeight + this.hitboxOffsetY) {
+            this.positionY = rectangle.bottom - this.tileHeight + this.hitboxOffsetY;
         }
-        if (this.positionX < rectangle.left) {
-            this.positionX = rectangle.left;
+        if (this.hitboxPositionX < rectangle.left) {
+            this.positionX = rectangle.left - this.hitboxOffsetX;
         }
-        if (this.positionX > rectangle.right - this.tileWidth) {
-            this.positionX = rectangle.right - this.tileWidth;
+        if (this.hitboxPositionX > rectangle.right - this.tileWidth + this.hitboxOffsetX) {
+            this.positionX = rectangle.right - this.tileWidth + this.hitboxOffsetX;
         }
     }
 }

@@ -67,7 +67,11 @@ export default class GameScene {
             tilesAmount: 1,
             tileWidth: 16,
             tileHeight: 16,
-            weapon: basicWeapon
+            weapon: basicWeapon,
+            hitboxOffsetX: 4,
+            hitboxOffsetY: 4,
+            hitboxWidth: 4,
+            hitboxHeight: 4,
         });
         this.player.positionX = this.gameWindow.width / 2 - this.player.tileWidth / 2;
         this.player.positionY = this.gameWindow.height / 2 - this.player.tileHeight / 2;

@@ -1,4 +1,3 @@
-//a basic game object class. includes methods EVERY object on a screen has
 export default class Object {
     constructor(props) {
         this.name = props.name;
@@ -12,6 +11,15 @@ export default class Object {
         this.radAngle = this.angle * Math.PI / 180;
         this.positionX = props.positionX || 0;
         this.positionY = props.positionY || 0;
+        this.hitboxOffsetX = props.hitboxOffsetX;
+        this.hitboxOffsetY = props.hitboxOffsetY;
+        this.hitboxHeight = props.hitboxHeight;
+        this.hitboxWidth = props.hitboxWidth;
+        this.hitboxPositionX = this.positionX + this.hitboxOffsetX;
+        this.hitboxPositionY = this.positionY + this.hitboxOffsetY;
+        if (this.hitboxOffsetX ||  this.hitboxOffsetY || this.hitboxHeight || this.hitboxWidth) {
+            this.hasHitbox = true;
+        }
     }
 
     nextTile() {

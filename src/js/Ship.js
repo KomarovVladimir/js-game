@@ -3,7 +3,6 @@ import DynamicObject from './DynamicObject';
 export default class Ship extends DynamicObject {
     constructor(props) {
         super(props);
-        
         this.hp = props.hp || 100;
         this.shotingSpeed = props.shotingSpeed || 1;
         this.lastShot = null;
