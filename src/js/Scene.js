@@ -53,27 +53,29 @@ export default class GameScene {
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
         const basicWeapon = new Weapon({
-            bulletImage: mediaHandler.getImage('rocket'),
-            tileWidth: 16,
-            tileHeight: 16,
-            speed: 10,
+            bulletImage: mediaHandler.getImage('missile'),
+            tileWidth: 32,
+            tileHeight: 32,
+            speed: 6,
             hitboxWidth: 10,
             hitboxHeight: 10,
+            weaponX: 16,
+            weaponY: -16,
         });
 
         this.player = objectHandler.createObject(Player, {
             hp: 100,
             speed: 5,
-            shotingSpeed: 10,
-            image: mediaHandler.getImage('ship'),
-            tilesAmount: 1,
-            tileWidth: 16,
-            tileHeight: 16,
+            shotingSpeed: 4,
+            image: mediaHandler.getImage('biggership'),
+            tilesAmount: 2,
+            tileWidth: 64,
+            tileHeight: 64,
             weapon: basicWeapon,
-            hitboxOffsetX: 4,
-            hitboxOffsetY: 4,
-            hitboxWidth: 4,
-            hitboxHeight: 4,
+            hitboxOffsetX: 16,
+            hitboxOffsetY: 16,
+            hitboxWidth: 32,
+            hitboxHeight: 32,
         });
         this.player.setPosition(this.gameWindow.width / 2 - this.player.tileWidth / 2, this.gameWindow.height / 2 - this.player.tileHeight / 2);
         this.pushToLayer(this.player, 'main');

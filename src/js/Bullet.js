@@ -17,7 +17,7 @@ export default class Bullet extends DynamicObject {
     }
 
     checkBorders() {
-        if (this.positionY - this.tileHeight < 0) {
+        if (this.positionY - this.tileHeight <= 0) {
             objectHandler.deleteObject(this);
         }
     }
