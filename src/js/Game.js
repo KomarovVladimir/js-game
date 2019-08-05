@@ -20,6 +20,7 @@ export default class Game {
             './dist/images/ship.png',
             './dist/images/enemy.png',
             './dist/images/bullet.png',
+            './dist/images/rocket.png',
         ]);
 
         //preload images

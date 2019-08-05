@@ -53,10 +53,12 @@ export default class GameScene {
     //OBJECT CREATION <================================================================================================
     createSceneObjects() {
         const basicWeapon = new Weapon({
-            bulletImage: mediaHandler.getImage('bullet'),
-            tileWidth: 1,
-            tileHeight: 3,
+            bulletImage: mediaHandler.getImage('rocket'),
+            tileWidth: 16,
+            tileHeight: 16,
             speed: 10,
+            hitboxWidth: 10,
+            hitboxHeight: 10,
         });
 
         this.player = objectHandler.createObject(Player, {
@@ -73,8 +75,7 @@ export default class GameScene {
             hitboxWidth: 4,
             hitboxHeight: 4,
         });
-        this.player.positionX = this.gameWindow.width / 2 - this.player.tileWidth / 2;
-        this.player.positionY = this.gameWindow.height / 2 - this.player.tileHeight / 2;
+        this.player.setPosition(this.gameWindow.width / 2 - this.player.tileWidth / 2, this.gameWindow.height / 2 - this.player.tileHeight / 2);
         this.pushToLayer(this.player, 'main');
         console.log(this.player);
     }

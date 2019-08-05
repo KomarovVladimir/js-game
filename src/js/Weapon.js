@@ -12,6 +12,8 @@ export default class Weapon {
         this.tileHeight = props.tileHeight;
         this.damage = props.damage || 1;
         this.speed = props.speed || 1;
+        this.weaponX = props.weaponX || 0;
+        this.weaponY = props.weaponY || 0;
     }
 
     shot(positionX, positionY) {
@@ -20,8 +22,8 @@ export default class Weapon {
             image: this.bulletImage,
             tileWidth: this.tileWidth,
             tileHeight: this.tileHeight,
-            positionX: positionX,
-            positionY: positionY,
+            positionX: positionX + this.weaponX,
+            positionY: positionY + this.weaponY,
             damage: this.damage,
             speed: this.speed
         });
