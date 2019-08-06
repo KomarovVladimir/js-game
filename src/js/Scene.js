@@ -15,8 +15,8 @@ export default class GameScene {
         this.name = props.name;
         this.gameWindow = new GameWindow({
             canvas: props.canvas,
-            width: 400,
-            height: 600,
+            width: 900,
+            height: 700,
             // scale: 2
         });
         this.requestId = null;
@@ -56,7 +56,7 @@ export default class GameScene {
             bulletImage: mediaHandler.getImage('missile'),
             tileWidth: 32,
             tileHeight: 32,
-            speed: 6,
+            speed: 10,
             hitboxWidth: 10,
             hitboxHeight: 10,
             weaponX: 16,
