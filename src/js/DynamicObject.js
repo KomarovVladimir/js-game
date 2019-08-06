@@ -3,14 +3,15 @@ import Object from './Object';
 export default class DynamicObject extends Object {
     constructor(props) {
         super(props);
-        this.speed = props.speed || 10;
-        this.turnSpeed = props.turnSpeed || 5;
+        this.speed = props.speed || 0;
+        this.turnSpeed = props.turnSpeed || 0;
     }
 
-    move(angle) {
+    move(angle, dt) {
+        let offset = this.speed * dt / 1000;
         const radAngle = angle * Math.PI / 180;
-        this.positionX += Math.round(Math.cos(radAngle) * this.speed);
-        this.positionY -= Math.round(Math.sin(radAngle) * this.speed);
+        this.positionX += Math.round(Math.cos(radAngle) * offset);
+        this.positionY -= Math.round(Math.sin(radAngle) * offset);
         if (this.hasHitbox) {
             this.updateHitboxPosition();
         }

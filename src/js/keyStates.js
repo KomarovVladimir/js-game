@@ -7,7 +7,6 @@ let keyStates = {
 };
 
 window.addEventListener('keydown', (e) => {
-    e.preventDefault();
     if (e.keyCode === 87 || e.keyCode === 38) {
         keyStates.up = true;
     }
@@ -29,7 +28,6 @@ window.addEventListener('keydown', (e) => {
 }, true);
     
 window.addEventListener('keyup', (e) => {
-    e.preventDefault();
     if (e.keyCode === 87 || e.keyCode === 38) {
         keyStates.up = false;
     }

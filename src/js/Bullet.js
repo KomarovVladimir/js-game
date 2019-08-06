@@ -7,12 +7,12 @@ export default class Bullet extends DynamicObject {
     constructor (props) {
         super(props);
 
-        this.damage = props.damage || 1;
-        this.speed = props.speed || 1;
+        this.damage = props.damage || 0;
+        this.speed = props.speed || 0;
     }
 
-    update() {
-        this.move(this.angle);
+    update(dt) {
+        this.move(this.angle, dt);
         this.checkBorders()
     }
 

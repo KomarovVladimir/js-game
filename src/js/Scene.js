@@ -56,7 +56,7 @@ export default class GameScene {
             bulletImage: mediaHandler.getImage('missile'),
             tileWidth: 32,
             tileHeight: 32,
-            speed: 10,
+            speed: 700,
             hitboxWidth: 10,
             hitboxHeight: 10,
             weaponX: 16,
@@ -65,7 +65,7 @@ export default class GameScene {
 
         this.player = objectHandler.createObject(Player, {
             hp: 100,
-            speed: 5,
+            speed: 500,
             shotingSpeed: 4,
             image: mediaHandler.getImage('biggership'),
             tilesAmount: 2,
@@ -115,23 +115,23 @@ export default class GameScene {
     }
 
     //LOGIC <================================================================================================
-    update() {
-        this.keyHandler();
+    update(dt) {
+        this.keyHandler(dt);
         for (let obj of this.objects) {
             if (obj.update) {
-                obj.update();
+                obj.update(dt);
             }
         }
     }
     
     //ANIMATION <================================================================================================
     frame() {
-        let dt = performance.now() - this.lastTime;
+        let dt = ~~(performance.now() - this.lastTime);
         
         if (dt < this.frameDelay) {
             this.requestId = requestAnimationFrame(this.frame);
         } else {
-            this.update();
+            this.update(dt);
             this.refreshTiles(this.objects);
             
             this.render();
@@ -165,31 +165,31 @@ export default class GameScene {
         this.gameWindow.ctx.fillRect(0, 0, this.gameWindow.width, this.gameWindow.height);
     }
 
-    keyHandler() {
+    keyHandler(dt) {
         if (keyStates.space) {
             this.player.shot();
         }
 
         if (keyStates.up) {
             if (keyStates.right) {
-                this.player.move(45);
+                this.player.move(45, dt);
             } else if (keyStates.left){
-                this.player.move(135);
+                this.player.move(135, dt);
             } else {
-                this.player.move(90);
+                this.player.move(90, dt);
             }
         } else if (keyStates.down) {
             if (keyStates.right) {
-                this.player.move(315);
+                this.player.move(315, dt);
             } else if (keyStates.left){
-                this.player.move(225);
+                this.player.move(225, dt);
             } else {
-                this.player.move(270);
+                this.player.move(270, dt);
             }
         } else if (keyStates.left) {
-            this.player.move(180);
+            this.player.move(180, dt);
         } else if (keyStates.right){
-            this.player.move(0);
+            this.player.move(0, dt);
         }
 
         this.player.checkBorders(this.gameWindow);
