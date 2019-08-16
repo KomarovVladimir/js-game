@@ -41,11 +41,24 @@ export default class Player extends Ship {
     }
 
     update(dt) {
-        if(keyStates.left && keyStates.right) {
-            this.currentTileRow = 3;
-        }
-        if(!keyStates.left && !keyStates.right) {
+        if(!keyStates.left && !keyStates.right && !keyStates.up) {
             this.currentTileRow = 0;
+        } else if (keyStates.up) {
+            if (keyStates.right && keyStates.left) {
+                this.currentTileRow = 7;
+            } else if (keyStates.right) {
+                this.currentTileRow = 5;
+            } else if (keyStates.left){
+                this.currentTileRow = 3;
+            } else {
+                this.currentTileRow = 1;
+            }
+        } else if (keyStates.right && keyStates.left) {
+            this.currentTileRow = 6;
+        } else if (keyStates.left) {
+            this.currentTileRow = 2;
+        } else if (keyStates.right){
+            this.currentTileRow = 4;
         }
     }
 }
