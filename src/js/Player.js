@@ -41,7 +41,6 @@ export default class Player extends Ship {
     }
 
     update(dt) {
-        super.update(dt);
         if(keyStates.left && keyStates.right) {
             this.currentTileRow = 3;
         }

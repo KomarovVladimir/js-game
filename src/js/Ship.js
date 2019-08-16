@@ -17,18 +17,14 @@ export default class Ship extends DynamicObject {
         this.move(this.angle, dt);
     }
 
-    update() {
-
-    }
-
     shot() {            
         if (!this.lastShot) {
             this.lastShot = performance.now(); 
-            this.weapon.shot(this.positionX, this.positionY);
+            this.weapon.shot(this.positionX, this.positionY, this.angle);
         }
         let dt = performance.now() - this.lastShot;
         if (dt >= 1000 / this.shotingSpeed) {
-            this.weapon.shot(this.positionX, this.positionY);
+            this.weapon.shot(this.positionX, this.positionY, this.angle);
             this.lastShot = performance.now();
         }
     } 

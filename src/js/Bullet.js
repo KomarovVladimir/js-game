@@ -13,12 +13,21 @@ export default class Bullet extends DynamicObject {
 
     update(dt) {
         this.move(this.angle, dt);
-        this.checkBorders()
+        // this.checkBorders()
     }
 
-    checkBorders() {
-        if (this.positionY + this.tileHeight <= 0) {
-            objectHandler.deleteObject(this);
-        }
-    }
+    // checkBorders() {
+    //     if (this.positionY + this.tileHeight <= 0) {
+    //         objectHandler.deleteObject(this);
+    //     }
+    //     if (this.positionY + this.tileHeight > 0) {
+    //         objectHandler.deleteObject(this);
+    //     }
+    //     if (this.positionY + this.tileHeight <= 0) {
+    //         objectHandler.deleteObject(this);
+    //     }
+    //     if (this.positionY + this.tileHeight <= 0) {
+    //         objectHandler.deleteObject(this);
+    //     }
+    // }
 }
