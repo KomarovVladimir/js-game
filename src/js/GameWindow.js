@@ -1,7 +1,6 @@
 export default class GameWindow {
     constructor(props) {
-        this.canvas = props.canvas;
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx = props.ctx;
         this.width = props.width;
         this.height = props.height;
         this.top = 0;

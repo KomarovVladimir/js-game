@@ -14,7 +14,7 @@ export default class GameScene {
     constructor(props) {
         this.name = props.name;
         this.gameWindow = new GameWindow({
-            canvas: props.canvas,
+            ctx: props.ctx,
             width: 900,
             height: 700,
             // scale: 2
@@ -56,7 +56,7 @@ export default class GameScene {
             bulletImage: mediaHandler.getImage('missile'),
             tileWidth: 32,
             tileHeight: 32,
-            speed: 700,
+            speed: 400,
             hitboxWidth: 10,
             hitboxHeight: 10,
             weaponX: 16,
@@ -65,9 +65,10 @@ export default class GameScene {
 
         this.player = objectHandler.createObject(Player, {
             hp: 100,
-            speed: 500,
+            speed: 200,
+            turnSpeed: 5,
             shotingSpeed: 4,
-            image: mediaHandler.getImage('biggership'),
+            image: mediaHandler.getImage('ship'),
             tilesAmount: 2,
             tileWidth: 64,
             tileHeight: 64,
@@ -170,26 +171,36 @@ export default class GameScene {
             this.player.shot();
         }
 
+        // if (keyStates.up) {
+        //     if (keyStates.right) {
+        //         this.player.move(45, dt);
+        //     } else if (keyStates.left){
+        //         this.player.move(135, dt);
+        //     } else {
+        //         this.player.move(90, dt);
+        //     }
+        // } else if (keyStates.down) {
+        //     if (keyStates.right) {
+        //         this.player.move(315, dt);
+        //     } else if (keyStates.left){
+        //         this.player.move(225, dt);
+        //     } else {
+        //         this.player.move(270, dt);
+        //     }
+        // } else if (keyStates.left) {
+        //     this.player.move(180, dt);
+        // } else if (keyStates.right){
+        //     this.player.move(0, dt);
+        // }
+        
         if (keyStates.up) {
-            if (keyStates.right) {
-                this.player.move(45, dt);
-            } else if (keyStates.left){
-                this.player.move(135, dt);
-            } else {
-                this.player.move(90, dt);
-            }
-        } else if (keyStates.down) {
-            if (keyStates.right) {
-                this.player.move(315, dt);
-            } else if (keyStates.left){
-                this.player.move(225, dt);
-            } else {
-                this.player.move(270, dt);
-            }
-        } else if (keyStates.left) {
-            this.player.move(180, dt);
-        } else if (keyStates.right){
-            this.player.move(0, dt);
+            this.player.moveForward(dt);
+        }
+        if (keyStates.left) {
+            this.player.turn('left');
+        }
+        if (keyStates.right) {
+            this.player.turn('right');
         }
 
         this.player.checkBorders(this.gameWindow);

@@ -6,7 +6,7 @@ const objectHandler = new ObjectHandler();
 export default class Bullet extends DynamicObject {
     constructor (props) {
         super(props);
-
+        this.angle = props.angle;
         this.damage = props.damage || 0;
         this.speed = props.speed || 0;
     }

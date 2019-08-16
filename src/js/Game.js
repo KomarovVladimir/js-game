@@ -4,8 +4,8 @@ import GameScene from './Scene';
 const mediaHandler = new MediaHandler();
 
 export default class Game {
-    constructor(canvas) {
-        this.canvas = canvas;
+    constructor(ctx) {
+        this.ctx = ctx;
 
         //game state (off = 0, on = 1, pause = 2)
         this.gameState = 0;
@@ -41,7 +41,7 @@ export default class Game {
         //creation of stage 1 <================================================================================================ WiP!
         this.stage = new GameScene({
             name: 'A Test Game Stage',
-            canvas: this.canvas,
+            ctx: this.ctx,
         });
         this.stage.start();
     }  

@@ -9,6 +9,18 @@ export default class Ship extends DynamicObject {
         this.weapon = props.weapon || null;
     }
 
+    move(angle, dt) {
+        super.move(angle, dt);
+    }
+
+    moveForward(dt) {
+        this.move(this.angle, dt);
+    }
+
+    update() {
+
+    }
+
     shot() {            
         if (!this.lastShot) {
             this.lastShot = performance.now(); 
