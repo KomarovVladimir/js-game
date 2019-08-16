@@ -34,7 +34,7 @@ export default class Player extends Ship {
                 break;
             }
             case 'left': {
-                this.currentTileRow = 1;
+                this.currentTileRow = 1; 
                 break;
             }
         }
