@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "watch": "webpack --watch",
-    "build": "webpack"
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "clear": "del-cli dist"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,21 @@
   "homepage": "https://github.com/komavlad/js-game#readme",
   "devDependencies": {
     "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.4",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-classes": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "copy-webpack-plugin": "^5.0.4",
+    "core-js": "^3.2.1",
+    "del-cli": "^2.0.0",
+    "file-loader": "^4.2.0",
+    "regenerator-runtime": "^0.13.3",
     "webgl-2d": "0.0.2",
-    "webpack": "^4.35.3",
+    "webpack": "^4.39.2",
     "webpack-cli": "^3.3.5"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.5.5"
   }
 }
