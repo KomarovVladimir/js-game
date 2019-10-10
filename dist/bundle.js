@@ -17373,11 +17373,12 @@ function () {
         tileHeight: 32,
         tilesAmount: 8,
         shotingSpeed: 3,
-        speed: 350,
-        hitboxWidth: 10,
-        hitboxHeight: 10,
-        weaponX: 48,
-        weaponY: 0
+        bulletSpeed: 350,
+        offset: 40 // hitboxWidth: 10,
+        // hitboxHeight: 10,
+        // weaponX: 48,
+        // weaponY: 0,
+
       });
       this.player = objectHandler.createObject(_Player__WEBPACK_IMPORTED_MODULE_7__["default"], {
         hp: 100,
@@ -17753,7 +17754,7 @@ function () {
     this.damage = props.damage || 1;
     this.shotingSpeed = props.shotingSpeed || 1;
     this.lastShot = null;
-    this.speed = props.speed || 1;
+    this.bulletSpeed = props.bulletSpeed || 1;
     this.weaponX = props.weaponX || 0;
     this.weaponY = props.weaponY || 0;
   }
@@ -17763,20 +17764,21 @@ function () {
     value: function shot(positionX, positionY, angle) {
       if (!this.lastShot) {
         this.lastShot = performance.now();
-        this.createBullet(positionX, positionY, angle);
+        var bullet = this.createBullet(positionX, positionY, angle);
       }
 
       var dt = performance.now() - this.lastShot;
 
       if (dt >= 1000 / this.shotingSpeed) {
         this.lastShot = performance.now();
-        this.createBullet(positionX, positionY, angle);
+
+        var _bullet = this.createBullet(positionX, positionY, angle);
       }
     }
   }, {
     key: "createBullet",
     value: function createBullet(positionX, positionY, angle) {
-      objectHandler.createObject(_Bullet__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      return objectHandler.createObject(_Bullet__WEBPACK_IMPORTED_MODULE_2__["default"], {
         group: 'playerBullet',
         image: this.bulletImage,
         tileWidth: this.tileWidth,
@@ -17786,7 +17788,7 @@ function () {
         positionX: positionX + this.weaponX,
         positionY: positionY + this.weaponY,
         damage: this.damage,
-        speed: this.speed
+        speed: this.bulletSpeed
       });
     }
   }]);

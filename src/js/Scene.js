@@ -58,11 +58,12 @@ export default class GameScene {
             tileHeight: 32,
             tilesAmount: 8,
             shotingSpeed: 3,
-            speed: 350,
-            hitboxWidth: 10,
-            hitboxHeight: 10,
-            weaponX: 48,
-            weaponY: 0,
+            bulletSpeed: 350,
+            offset: 40,
+            // hitboxWidth: 10,
+            // hitboxHeight: 10,
+            // weaponX: 48,
+            // weaponY: 0,
         });
 
         this.player = objectHandler.createObject(Player, {
