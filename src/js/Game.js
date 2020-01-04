@@ -19,10 +19,6 @@ export default class Game {
         mediaHandler.setImageSources([
             './dist/images/ship.png',
             './dist/images/missile.png',
-            './dist/images/biggership.png',
-            './dist/images/enemy.png',
-            './dist/images/bullet.png',
-            './dist/images/rocket.png',
         ]);
 
         //preload images

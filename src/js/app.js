@@ -1,5 +1,7 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+import "webgl-2d/webgl-2d";
 import Game from './Game';
-import '../../node_modules/webgl-2d/webgl-2d';
 
 //GAME INIT <======================================================= 
 const canvas = document.getElementById('game');

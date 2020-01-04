@@ -12,13 +12,27 @@ export default class Weapon {
         this.tileHeight = props.tileHeight;
         this.tilesAmount = props.tilesAmount || 1;
         this.damage = props.damage || 1;
-        this.speed = props.speed || 1;
+        this.shotingSpeed = props.shotingSpeed || 1;
+        this.lastShot = null;
+        this.bulletSpeed = props.bulletSpeed || 1;
         this.weaponX = props.weaponX || 0;
         this.weaponY = props.weaponY || 0;
     }
  
     shot(positionX, positionY, angle) {
-        objectHandler.createObject(Bullet, {
+        if (!this.lastShot) {
+            this.lastShot = performance.now(); 
+            this.createBullet(positionX, positionY, angle);
+        }
+        let dt = performance.now() - this.lastShot;
+        if (dt >= 1000 / this.shotingSpeed) {
+            this.lastShot = performance.now();
+            this.createBullet(positionX, positionY, angle);
+        }
+    }
+
+    createBullet(positionX, positionY, angle) {
+        return objectHandler.createObject(Bullet, {
             group: 'playerBullet',
             image: this.bulletImage,
             tileWidth: this.tileWidth,
@@ -28,7 +42,7 @@ export default class Weapon {
             positionX: positionX + this.weaponX,
             positionY: positionY + this.weaponY,
             damage: this.damage,
-            speed: this.speed
+            speed: this.bulletSpeed 
         });
     }
 }
