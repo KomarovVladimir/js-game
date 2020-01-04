@@ -1,2 +1,2 @@
 let gameMedia = {};
-export default gameMedia;
+export default gameMedia; 

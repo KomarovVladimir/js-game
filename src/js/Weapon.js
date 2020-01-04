@@ -22,12 +22,12 @@ export default class Weapon {
     shot(positionX, positionY, angle) {
         if (!this.lastShot) {
             this.lastShot = performance.now(); 
-            let bullet = this.createBullet(positionX, positionY, angle);
+            this.createBullet(positionX, positionY, angle);
         }
         let dt = performance.now() - this.lastShot;
         if (dt >= 1000 / this.shotingSpeed) {
             this.lastShot = performance.now();
-            let bullet = this.createBullet(positionX, positionY, angle);
+            this.createBullet(positionX, positionY, angle);
         }
     }
 

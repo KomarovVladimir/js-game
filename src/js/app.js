@@ -1,6 +1,6 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import "../../node_modules/webgl-2d/webgl-2d";
+import "webgl-2d/webgl-2d";
 import Game from './Game';
 
 //GAME INIT <======================================================= 
